@@ -12,7 +12,7 @@ import jade.util.Logger;
 
 public class AircraftAgent extends Agent {
 	/**
-	 * 
+	 * Aircraft Agent
 	 */
 	private static final long serialVersionUID = 1634277483475631766L;
 	private FSMBehaviour m_fsm;
