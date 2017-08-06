@@ -9,6 +9,7 @@ import jade.core.ProfileImpl;
 import jade.wrapper.*;
 /**
  * @author IMEDEIRO
+ * 
  *
  */
 public class Main {
