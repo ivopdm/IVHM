@@ -16,7 +16,6 @@ public class AircraftAgent extends Agent {
 	 */
 	private static final long serialVersionUID = 1634277483475631766L;
 	private FSMBehaviour m_fsm;
-	private double m_price;
 	private final Logger logger = Logger.getMyLogger(getClass().getName());
 
 	//States
@@ -30,10 +29,6 @@ public class AircraftAgent extends Agent {
 	public static final int ADMISSION_OK = 1;
 	public static final int ADMISSION_NOK = 2;
 
-
-//	public AircraftAgent(double p_price){
-//		this.m_price = p_price;
-//	}
 
 	@Override
 	protected void setup() {
