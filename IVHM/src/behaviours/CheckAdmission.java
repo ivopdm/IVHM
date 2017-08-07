@@ -9,7 +9,9 @@ import jade.util.Logger;
 public class CheckAdmission extends OneShotBehaviour {
 	
 	/**
-	 * 
+	 * Behaviour/acao responsavel por validar se a 
+	 * instancia de AircraftAgent deve participar
+	 * da negociacao/competicao para realizar o voo
 	 */
 	private static final long serialVersionUID = 8628498715010608266L;
 	private String m_fltID = "";

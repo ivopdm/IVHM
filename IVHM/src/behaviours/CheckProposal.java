@@ -17,7 +17,9 @@ import jade.util.Logger;
 public class CheckProposal extends SimpleBehaviour {
 
 	/**
-	 * 
+	 * Behaviour do agente TasAgent que e
+	 * responsavel por receber propostas (Refuse e Propose) e
+	 * escolher a melhor proposta
 	 */
 	private static final long serialVersionUID = -2239480822286081170L;
 	

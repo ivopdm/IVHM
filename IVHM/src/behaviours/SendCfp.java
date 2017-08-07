@@ -16,7 +16,9 @@ import jade.lang.acl.ACLMessage;
 public class SendCfp extends OneShotBehaviour {
 
 	/**
-	 * 
+	 * Envia mensagem do tipo CFP para 
+	 * instancias de AircraftAgent.
+	 * Conteudo de a mensagem CFP e a ID do voo que precisa de um aviao
 	 */
 	private static final long serialVersionUID = 3903080487616288791L;
 	private HashMap<Flight,String> m_assignment;

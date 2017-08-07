@@ -14,7 +14,9 @@ import jade.util.Logger;
  */
 public class UpdPrice extends SimpleBehaviour {
 	/**
-	 * 
+	 * Behaviour de instancia do agente AircraftAgent
+	 * responsavel por atualizar preco
+	 * da instancia do agente AircraftAgent
 	 */
 	private static final long serialVersionUID = -4438000231811264073L;
 	private boolean m_finished;

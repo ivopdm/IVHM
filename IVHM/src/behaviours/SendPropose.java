@@ -9,7 +9,9 @@ public class SendPropose extends OneShotBehaviour {
 
 	
 	/**
-	 * 
+	 * Behaviour do agente AircraftAgent responsavel
+	 * pela acao de enviar uma proposta para a
+	 * instancia do agente TasAgent.
 	 */
 	private static final long serialVersionUID = 3591700095749070623L;	
 	private final Logger logger = Logger.getMyLogger(getClass().getName());
