@@ -35,16 +35,15 @@ public class CheckUnassigned extends OneShotBehaviour {
 	 */
 	
 	public CheckUnassigned(HashMap<Flight,String> p_assignment){
-		this.m_assignment = p_assignment;
-		
-		for (Map.Entry<Flight, String> entry : m_assignment.entrySet()) {
-			m_logger.info(entry.getKey().getM_FlightID() + " -> " + entry.getValue());			
-		}
-		
+		this.m_assignment = p_assignment;		
 	}
 	
 	@Override
 	public void action() {
+		
+		for (Map.Entry<Flight, String> entry : m_assignment.entrySet()) {
+			m_logger.info(entry.getKey().getM_FlightID() + " => " + entry.getValue());			
+		}
 		
 		if(m_assignment.containsValue(TasAgent.FLIGHT_UNASSIGNED)){
 			m_trigger = TasAgent.CONTAINS_UNASSIGNED;

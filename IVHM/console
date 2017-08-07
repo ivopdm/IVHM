@@ -1,0 +1,182 @@
+Launching a whole in-process platform...{main=true, port=8888}
+07/08/2017 12:46:15 jade.core.Runtime beginContainer
+INFO: ----------------------------------
+    This is JADE 4.5.0 - revision 6825 of 23-05-2017 10:06:04
+    downloaded in Open Source, under LGPL restrictions,
+    at http://jade.tilab.com/
+----------------------------------------
+07/08/2017 12:46:15 jade.imtp.leap.LEAPIMTPManager initialize
+INFO: Listening for intra-platform commands on address:
+- jicp://192.168.25.117:8888
+
+07/08/2017 12:46:16 jade.core.BaseService init
+INFO: Service jade.core.management.AgentManagement initialized
+07/08/2017 12:46:16 jade.core.BaseService init
+INFO: Service jade.core.messaging.Messaging initialized
+07/08/2017 12:46:16 jade.core.BaseService init
+INFO: Service jade.core.resource.ResourceManagement initialized
+07/08/2017 12:46:16 jade.core.BaseService init
+INFO: Service jade.core.mobility.AgentMobility initialized
+07/08/2017 12:46:16 jade.core.BaseService init
+INFO: Service jade.core.event.Notification initialized
+07/08/2017 12:46:16 jade.mtp.http.HTTPServer <init>
+INFO: HTTP-MTP Using XML parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+07/08/2017 12:46:16 jade.core.messaging.MessagingService boot
+INFO: MTP addresses:
+http://mbpdemacintosh:7778/acc
+07/08/2017 12:46:16 jade.core.AgentContainerImpl joinPlatform
+INFO: --------------------------------------
+Agent container Main-Container@192.168.25.117 is ready.
+--------------------------------------------
+Launching the rma agent on the main container ...
+07/08/2017 12:46:16 agents.AircraftAgent setup
+INFO: Starting up ACFT_1
+07/08/2017 12:46:16 agents.AircraftAgent setup
+INFO: Starting up ACFT_2
+07/08/2017 12:46:16 agents.AircraftAgent setup
+INFO: Starting up ACFT_3
+07/08/2017 12:46:16 agents.TasAgent setup
+INFO: Starting up TAS
+07/08/2017 12:46:16 behaviours.CheckUnassigned <init>
+INFO: FLT_3 -> Unassigned
+07/08/2017 12:46:16 behaviours.CheckUnassigned <init>
+INFO: FLT_2 -> Unassigned
+07/08/2017 12:46:16 behaviours.CheckUnassigned <init>
+INFO: FLT_1 -> Unassigned
+07/08/2017 12:46:16 behaviours.CheckUnassigned action
+INFO: CONTAINS_UNASSIGNED
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_1
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_2
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_3
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Unassigned FLIGHT -> FLT_3
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_3 received content -> FLT_3
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_1 received content -> FLT_3
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_2 received content -> FLT_3
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_1 proposes -> 2.0
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_3 proposes -> 1.0
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_2 proposes -> 4.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: MaxUtility -> 1.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: BidIncrement -> 2.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: WinnerProposal -> 1.0
+07/08/2017 12:46:16 behaviours.CheckProposal done
+INFO: CHECK PROPOSAL HAS FINISHED
+07/08/2017 12:46:16 behaviours.SendFeedback action
+INFO: FEEDBACK SENT TO ACFTs
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_2 HAS PRICE UPDATED TO -> 4.0
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_3 HAS PRICE UPDATED TO -> 4.0
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_1 HAS PRICE UPDATED TO -> 2.0
+07/08/2017 12:46:16 behaviours.CheckUnassigned action
+INFO: CONTAINS_UNASSIGNED
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_1
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_2
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_3
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_1 received content -> FLT_2
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_2 received content -> FLT_2
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Unassigned FLIGHT -> FLT_2
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_3 received content -> FLT_2
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_2 proposes -> 4.0
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_1 proposes -> 2.0
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_3 proposes -> 4.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: MaxUtility -> 1.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: BidIncrement -> 0.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: WinnerProposal -> 4.0
+07/08/2017 12:46:16 behaviours.CheckProposal done
+INFO: CHECK PROPOSAL HAS FINISHED
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_2 HAS PRICE UPDATED TO -> 5.0
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_1 HAS PRICE UPDATED TO -> 2.0
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_3 HAS PRICE UPDATED TO -> 4.0
+07/08/2017 12:46:16 behaviours.SendFeedback action
+INFO: FEEDBACK SENT TO ACFTs
+07/08/2017 12:46:16 behaviours.CheckUnassigned action
+INFO: CONTAINS_UNASSIGNED
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_1
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_2
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Receiver: ACFT_3
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_1 received content -> FLT_1
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_3 received content -> FLT_1
+07/08/2017 12:46:16 behaviours.CheckCFP action
+INFO: ACFT_2 received content -> FLT_1
+07/08/2017 12:46:16 behaviours.SendCfp action
+INFO: Unassigned FLIGHT -> FLT_1
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.CheckAdmission onEnd
+INFO: ADMISSION OK
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_2 proposes -> 5.0
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_3 proposes -> 4.0
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_2 HAS PRICE UPDATED TO -> 5.0
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_3 HAS PRICE UPDATED TO -> 4.0
+07/08/2017 12:46:16 behaviours.SendPropose action
+INFO: ACFT_1 proposes -> 2.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: MaxUtility -> 0.0
+07/08/2017 12:46:16 behaviours.UpdPrice action
+INFO: ACFT_1 HAS PRICE UPDATED TO -> 2.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: BidIncrement -> 0.0
+07/08/2017 12:46:16 behaviours.CheckProposal action
+INFO: WinnerProposal -> 2.0
+07/08/2017 12:46:16 behaviours.CheckProposal done
+INFO: CHECK PROPOSAL HAS FINISHED
+07/08/2017 12:46:16 behaviours.SendFeedback action
+INFO: FEEDBACK SENT TO ACFTs
+07/08/2017 12:46:16 behaviours.CheckUnassigned action
+INFO: ALL_ASSIGNED
+Voo => FLT_3 Aviao => ACFT_3
+Voo => FLT_2 Aviao => ACFT_2
+Voo => FLT_1 Aviao => ACFT_1

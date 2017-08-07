@@ -33,12 +33,12 @@ public class CheckAdmission extends OneShotBehaviour {
 		if(m_fltID.equals("FLT_1") || 
 				m_fltID.equals("FLT_2") ||
 				m_fltID.equals("FLT_3")){
-			logger.info("ADMISSION OK");
+			logger.info(myAgent.getLocalName() + " => ADMISSION OK");
 			
 			return AircraftAgent.ADMISSION_OK;
 			
 		}else{
-			logger.info("ADMISSION NOK");
+			logger.info(myAgent.getLocalName() + " => ADMISSION NOK");
 			return AircraftAgent.ADMISSION_NOK;
 		}
 			

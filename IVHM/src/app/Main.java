@@ -31,27 +31,21 @@ public class Main {
 
 		System.out.println("Launching a whole in-process platform..."+pMain);
 		AgentContainer mc = rt.createMainContainer(pMain);
-
-		// set now the default Profile to start a container
-//		ProfileImpl pContainer = new ProfileImpl(null, 8888, null);
-//		System.out.println("Launching the agent container ..."+pContainer);
-//		AgentContainer cont = rt.createAgentContainer(pContainer);
-//		System.out.println("Launching the agent container after ..."+pContainer);
-
+		
 		System.out.println("Launching the rma agent on the main container ...");
-		AgentController rma;
+		//AgentController rma;
 		AgentController sniffer;
-		AgentController introspector;
+		//AgentController introspector;
 		
 		try {
-			rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new Object[0]); 
-			rma.start();
+			//rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new Object[0]); 
+			//rma.start();
 			
-			//sniffer = mc.createNewAgent("sniffer","jade.tools.sniffer.Sniffer", new Object[0]);
-			//sniffer.start();
+			sniffer = mc.createNewAgent("sniffer","jade.tools.sniffer.Sniffer", new Object[0]);
+			sniffer.start();
 			
-			introspector = mc.createNewAgent("introspector", "jade.tools.introspector.Introspector", new Object[0]);
-			introspector.start();
+			//introspector = mc.createNewAgent("introspector", "jade.tools.introspector.Introspector", new Object[0]);
+			//introspector.start();
 			
 			AgentController acft_1 = 
 				mc.createNewAgent("ACFT_1", agents.AircraftAgent.class.getName(), new Object[]{new Double(2.0)} );

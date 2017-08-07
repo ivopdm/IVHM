@@ -32,6 +32,7 @@ public class UpdPrice extends SimpleBehaviour {
 		DataStore v_ds = getDataStore();
 		
 		double v_price = (Double) v_ds.get(myAgent.getLocalName() +"_PRICE");
+		double v_oldPrice = v_price;
 		
 		ACLMessage v_propResp = myAgent.receive(m_mt);
 
@@ -44,7 +45,7 @@ public class UpdPrice extends SimpleBehaviour {
 			}
 
 			v_ds.put(myAgent.getLocalName() +"_PRICE", v_price);
-			m_logger.info(myAgent.getLocalName() +" HAS PRICE UPDATED TO -> " + v_price);
+			m_logger.info(myAgent.getLocalName() +" HAS PRICE UPDATED FROM => " + v_oldPrice +  " TO -> " + v_price);
 			m_finished = true;
 
 		}else{

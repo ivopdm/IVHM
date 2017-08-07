@@ -86,13 +86,13 @@ public class CheckProposal extends SimpleBehaviour {
 			Collections.sort(v_bidList, Collections.reverseOrder());
 			//Max value at current prices
 			v_ds.put(TasAgent.KEY_MAX_UTILITY, v_bidList.get(0));
-			m_logger.info(TasAgent.KEY_MAX_UTILITY + " -> "+ v_bidList.get(0));
+			m_logger.info(TasAgent.KEY_MAX_UTILITY + " => "+ v_bidList.get(0));
 			//Difference between First and Second max value at current prices
 			v_ds.put(TasAgent.KEY_BID_INCREMENT, v_bidList.get(0) - v_bidList.get(1));
-			m_logger.info(TasAgent.KEY_BID_INCREMENT +" -> " + v_ds.get(TasAgent.KEY_BID_INCREMENT));
+			m_logger.info(TasAgent.KEY_BID_INCREMENT +" => " + v_ds.get(TasAgent.KEY_BID_INCREMENT));
 			//WinnerProposal
 			v_ds.put(TasAgent.KEY_WIN_PROPOSAL, m_winnerProp);
-			m_logger.info(TasAgent.KEY_WIN_PROPOSAL + " -> " +  m_winnerProp.getContent());
+			m_logger.info(TasAgent.KEY_WIN_PROPOSAL + " => " +  m_winnerProp.getSender().getLocalName());
 			
 			//List of proponents
 			v_ds.put(TasAgent.KEY_PROPONENT_LIST, m_proposeList);
