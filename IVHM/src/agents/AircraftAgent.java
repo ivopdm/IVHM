@@ -12,20 +12,25 @@ import jade.util.Logger;
 
 public class AircraftAgent extends Agent {
 	/**
-	 * Aircraft Agent
+	 * Aircraft Agent coordena acoes do aviao
 	 */
 	private static final long serialVersionUID = 1634277483475631766L;
 	private FSMBehaviour m_fsm;
 	private final Logger logger = Logger.getMyLogger(getClass().getName());
 
-	//States
+	/**States: constantes que guardam o nome dos estados.
+	 * 
+	 */
 	public static final String CHECK_CFP = "Check_CFP";
 	public static final String CHECK_ADMISSION = "Check_Admission";
 	public static final String SEND_PROPOSE = "Send_Propose";
 	public static final String SEND_REFUSE = "Send_Refuse";
 	private static final String UPD_PRICE = "Update_Price";
 
-	//Triggers
+	/**Triggers: constantes que guardam numeros (sinais)
+	 * que sao utilizados para habilitar transicao
+	 * entre estados.
+	 */
 	public static final int ADMISSION_OK = 1;
 	public static final int ADMISSION_NOK = 2;
 
@@ -35,15 +40,25 @@ public class AircraftAgent extends Agent {
 		super.setup();
 		
 		logger.info("Starting up " + getLocalName());
+		/**Behaviour executa uma maquina de estados
+		 * cada estado e um behaviour
+		 * as transicoes sao definidas abaixo, juntamente
+		 * com os estados.
+		 */
+		
 		m_fsm = new FSMBehaviour();	
 		
+		//Recebe argumento passado na classe app.Main
 		Object[] args = getArguments();
 		if(args.length > 0) {
 			m_fsm.getDataStore().put(getLocalName() +"_PRICE", (Double) args[0]);
 		}
 
 
-		//REGISTER STATES
+		/**REGISTER STATES: cria estados e guarda
+		 * na maquina de estados. Cada estado e uma 
+		 * classe que estende a classe behaviour/oneshotbehaviour/simplebehaviour...
+		 */
 		Behaviour checkCfp = new CheckCFP();		
 		checkCfp.setDataStore(m_fsm.getDataStore());		
 		m_fsm.registerFirstState(checkCfp, CHECK_CFP);
