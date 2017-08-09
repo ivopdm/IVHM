@@ -2,6 +2,12 @@ package commons;
 
 import java.util.HashMap;
 
+
+/**
+ * 
+ * @author ivopdm
+ * TODO Vai ter que mudar para considerar que o voo tem um unico valor independente do aviao
+ */
 public class Flight {
 	
 	private String m_FlightID;

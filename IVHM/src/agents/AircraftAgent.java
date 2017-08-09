@@ -18,8 +18,8 @@ public class AircraftAgent extends Agent {
 	private FSMBehaviour m_fsm;
 	private final Logger logger = Logger.getMyLogger(getClass().getName());
 
-	/**States: constantes que guardam o nome dos estados.
-	 * 
+	/**
+	 * States: constantes que guardam o nome dos estados.
 	 */
 	public static final String CHECK_CFP = "Check_CFP";
 	public static final String CHECK_ADMISSION = "Check_Admission";
@@ -49,6 +49,10 @@ public class AircraftAgent extends Agent {
 		m_fsm = new FSMBehaviour();	
 		
 		//Recebe argumento passado na classe app.Main
+		/**
+		 * TODO Passar a localizacao atual do aviao
+		 * Informacao do valor dos voos
+		 */
 		Object[] args = getArguments();
 		if(args.length > 0) {
 			m_fsm.getDataStore().put(getLocalName() +"_PRICE", (Double) args[0]);

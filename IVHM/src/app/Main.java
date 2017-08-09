@@ -41,12 +41,14 @@ public class Main {
 			//rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new Object[0]); 
 			//rma.start();
 			
-			sniffer = mc.createNewAgent("sniffer","jade.tools.sniffer.Sniffer", new Object[0]);
-			sniffer.start();
+			//sniffer = mc.createNewAgent("sniffer","jade.tools.sniffer.Sniffer", new Object[0]);
+			//sniffer.start();
 			
 			//introspector = mc.createNewAgent("introspector", "jade.tools.introspector.Introspector", new Object[0]);
 			//introspector.start();
-			
+			/**
+			 * TODO Valores de preco serao o combustivel requerido para o voo x fator de consumo de combustivel do aviao
+			 */
 			AgentController acft_1 = 
 				mc.createNewAgent("ACFT_1", agents.AircraftAgent.class.getName(), new Object[]{new Double(2.0)} );
 			

@@ -1,9 +1,11 @@
 package behaviours;
 
 import agents.AircraftAgent;
+import commons.Flight;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 import jade.util.Logger;
 
 public class CheckAdmission extends OneShotBehaviour {
@@ -25,6 +27,13 @@ public class CheckAdmission extends OneShotBehaviour {
 		DataStore ds = getDataStore();
 		v_cfp = (ACLMessage) ds.get("CFP");
 		m_fltID = v_cfp.getContent();
+		try {
+			
+			Flight v_flt = (Flight) v_cfp.getContentObject();
+		} catch (UnreadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

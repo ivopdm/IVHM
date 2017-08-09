@@ -55,7 +55,9 @@ public class TasAgent extends Agent {
 	@Override
 	protected void setup() {
 		super.setup();
-		
+		/** 
+		 * TODO Preencher valores de voo, quanto vale aquele voo
+		 */
 		m_assignmentFlt1.put("ACFT_1", 2.0);
 		m_assignmentFlt1.put("ACFT_2", 4.0);
 		m_assignmentFlt1.put("ACFT_3", 0.0);

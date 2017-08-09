@@ -24,7 +24,7 @@ public class UpdPrice extends SimpleBehaviour {
 	private MessageTemplate m_op1 = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 	private MessageTemplate m_op2 = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
 	private MessageTemplate m_mt = MessageTemplate.or(m_op1, m_op2);
-	private final double EPSON = 1;
+	private final double EPSON = 0.1;
 
 	@Override
 	public void action() {
