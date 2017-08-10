@@ -1,5 +1,6 @@
 package behaviours;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,9 @@ public class SendCfp extends OneShotBehaviour {
 	 */
 	private static final long serialVersionUID = 3903080487616288791L;
 	private HashMap<Flight,String> m_assignment;
-	
+
 	private List<AID> m_recList;
-	
+
 	private final Logger m_logger = Logger.getLogger(getClass().getName()); 
 
 	public SendCfp(HashMap<Flight,String> p_assignment, List<AID> p_recList) {
@@ -37,20 +38,34 @@ public class SendCfp extends OneShotBehaviour {
 		ACLMessage v_cfp = new ACLMessage(ACLMessage.CFP);
 		DataStore v_ds;
 		v_ds = getDataStore();
-		
+
 		//Set receiver for CFP
 		for (AID aid : m_recList) {
 			v_cfp.addReceiver(aid);
 			m_logger.log(Level.INFO, "Receiver: {0}", aid.getLocalName() );
 		}
-
+		/**
+		 * Checa o voo que nao esta alocado,
+		 * e quando acha o primeiro nao alocado
+		 *  adiciona ao conteudo da mensagem
+		 */
 		for (Map.Entry<Flight, String> v_unAssign : m_assignment.entrySet()) {
 			if(v_unAssign.getValue().equals(TasAgent.FLIGHT_UNASSIGNED)){
-				v_cfp.setContent(v_unAssign.getKey().getM_FlightID());				
+
+				try {
+					v_cfp.setContentObject(v_unAssign.getKey());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				myAgent.send(v_cfp);
+
 				v_ds.put(TasAgent.KEY_CURRENT_UNASSIGNED, v_unAssign.getKey());
+
 				m_logger.log(Level.INFO, "Unassigned FLIGHT -> {0}", 
 						v_unAssign.getKey().getM_FlightID());
+
 				break;
 			}
 		}

@@ -21,7 +21,7 @@ public class SendFeedback extends OneShotBehaviour {
 	private static final long serialVersionUID = 8097174469802047304L;
 	
 	
-	private final Logger logger = Logger.getMyLogger(getClass().getName());
+	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 	
 	@Override
 	public void action() {
@@ -46,7 +46,7 @@ public class SendFeedback extends OneShotBehaviour {
 		}
 		
 		myAgent.send(v_msg2loser);
-		logger.info("FEEDBACK SENT TO ACFTs");
+		m_logger.info("FEEDBACK SENT TO ACFTs");
 	}
 
 }

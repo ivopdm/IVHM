@@ -64,13 +64,10 @@ public class CheckProposal extends SimpleBehaviour {
 			DataStore v_ds = getDataStore();
 			
 			Flight v_unassFlt = (Flight) v_ds.get(TasAgent.KEY_CURRENT_UNASSIGNED);
-			HashMap<String, Double> v_assignmentValueMap = v_unassFlt.getM_assignmentValue();
+			Double v_assignmentValue = v_unassFlt.getFlightValue();
 			
 			for (ACLMessage aclMessage : m_proposeList) {
 
-				String v_respAcft = aclMessage.getSender().getLocalName();
-				
-				Double v_assignmentValue = v_assignmentValueMap.get(v_respAcft);
 				Double v_price = Double.parseDouble(aclMessage.getContent());
 				double v_bid = v_assignmentValue - v_price;
 
