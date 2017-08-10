@@ -5,6 +5,7 @@ import behaviours.CheckCFP;
 import behaviours.SendPropose;
 import behaviours.SendRefuse;
 import behaviours.UpdPrice;
+import commons.Aircraft;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.FSMBehaviour;
@@ -55,7 +56,7 @@ public class AircraftAgent extends Agent {
 		 */
 		Object[] args = getArguments();
 		if(args.length > 0) {
-			m_fsm.getDataStore().put(getLocalName() +"_PRICE", (Double) args[0]);
+			m_fsm.getDataStore().put(getLocalName(), (Aircraft) args[0]);
 		}
 
 

@@ -35,6 +35,11 @@ public class Flight implements Serializable {
 		// TODO Implementar valor do voo
 		return null;
 	}
+
+	public Object getOrig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

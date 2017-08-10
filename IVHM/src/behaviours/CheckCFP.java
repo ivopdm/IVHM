@@ -1,9 +1,11 @@
 package behaviours;
 
+import commons.Flight;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import jade.util.Logger;
 
 public class CheckCFP extends SimpleBehaviour {
@@ -14,7 +16,7 @@ public class CheckCFP extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = -789907945940792560L;
 	private MessageTemplate m_mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
-	private String m_cfp_content;
+	private Flight m_cfp_content;
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 	private boolean m_finished;
 	
@@ -27,9 +29,14 @@ public class CheckCFP extends SimpleBehaviour {
 		if(v_cfp != null){
 			m_finished = true;
 			
-			m_cfp_content = v_cfp.getContent();
+			try {
+				m_cfp_content = (Flight) v_cfp.getContentObject();
+			} catch (UnreadableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			m_logger.info(myAgent.getLocalName() + " received content -> " + m_cfp_content);
+			m_logger.info(myAgent.getLocalName() + " received content -> " + m_cfp_content.getM_FlightID());
 				
 			DataStore v_ds = getDataStore();
 			v_ds.put("CFP", v_cfp);			
