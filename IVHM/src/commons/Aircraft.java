@@ -12,4 +12,19 @@ public class Aircraft {
 		return null;
 	}
 
+	public void setRoute(Object route) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public double getPrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setPrice(double v_price) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
