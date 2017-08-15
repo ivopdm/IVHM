@@ -1,8 +1,11 @@
 package behaviours;
 
+import commons.Aircraft;
+import commons.Flight;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 import jade.util.Logger;
 
 public class SendPropose extends OneShotBehaviour {
@@ -14,21 +17,42 @@ public class SendPropose extends OneShotBehaviour {
 	 * instancia do agente TasAgent.
 	 */
 	private static final long serialVersionUID = 3591700095749070623L;	
-	private final Logger logger = Logger.getMyLogger(getClass().getName());
+	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
+	private Aircraft m_acft;
 	
 	@Override
 	public void action() {
 		DataStore v_ds = getDataStore();
-		Double m_price = (Double) v_ds.get(myAgent.getLocalName() + "_PRICE");
+		Aircraft m_acft = (Aircraft) v_ds.get(myAgent.getLocalName());
 		ACLMessage v_cfp = (ACLMessage) v_ds.get("CFP");
 		
-		ACLMessage v_aclPropose = v_cfp.createReply();
-		v_aclPropose.setPerformative(ACLMessage.PROPOSE);
-		v_aclPropose.setContent(m_price.toString());
-				
-		myAgent.send(v_aclPropose);		
+		try {
+			Flight v_flt = (Flight) v_cfp.getContentObject();
+			Double v_price = routePrice(v_flt);
+			ACLMessage v_aclPropose = v_cfp.createReply();
+			v_aclPropose.setPerformative(ACLMessage.PROPOSE);
+			v_aclPropose.setContent(v_price.toString());
+					
+			myAgent.send(v_aclPropose);		
+			
+			m_logger.info(myAgent.getLocalName() + " proposes -> " + v_price);
+			
+		} catch (UnreadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		logger.info(myAgent.getLocalName() + " proposes -> " + m_price);
+	}
+
+	private Double routePrice(Flight v_flt) {
+		/** TODO Checar o conjunto de voo ja atribuidos
+		 * para o aviao e calcula o preco baseado nisso
+		 * usar o fator de consumo do aviao x combustivel medio necessario para voo 
+		 * Usar objeto Aircraft e objeto Flight
+		 * Guarda no Data Store a rota e o preco proposta
+		 */
+		
+		return null;
 	}
 
 }

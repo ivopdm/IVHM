@@ -95,14 +95,14 @@ public class CheckProposal extends SimpleBehaviour {
 			v_ds.put(TasAgent.KEY_PROPONENT_LIST, m_proposeList);
 
 			//Remove another assignment involving winner proponent
-			for (Entry<Flight, String> v_winAssign : m_assignment.entrySet()){
+			/*for (Entry<Flight, String> v_winAssign : m_assignment.entrySet()){
 				if(v_winAssign.getValue().equals(
 						m_winnerProp.getSender().getLocalName())){
 					
 					m_assignment.put(v_winAssign.getKey(), TasAgent.FLIGHT_UNASSIGNED);
 					
 				}
-			}
+			}*/
 
 			//Update assignment set with new assignment involving winner proponent
 			m_assignment.put((Flight) v_ds.get(TasAgent.KEY_CURRENT_UNASSIGNED), 

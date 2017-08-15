@@ -1,5 +1,7 @@
 package behaviours;
 
+import commons.Aircraft;
+import commons.Proposal;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -30,9 +32,11 @@ public class UpdPrice extends SimpleBehaviour {
 	public void action() {
 		m_finished = false;
 		DataStore v_ds = getDataStore();
-		
-		double v_price = (Double) v_ds.get(myAgent.getLocalName() +"_PRICE");
+		Aircraft v_acft = (Aircraft) v_ds.get(myAgent.getLocalName());
+		double v_price = v_acft.getPrice();
 		double v_oldPrice = v_price;
+		Proposal v_prop = (Proposal) v_ds.get(myAgent.getLocalName() + "_PROPOSAL");
+		
 		
 		ACLMessage v_propResp = myAgent.receive(m_mt);
 
@@ -42,9 +46,12 @@ public class UpdPrice extends SimpleBehaviour {
 				v_price = v_price + 
 						Double.parseDouble(v_propResp.getContent()) +
 						EPSON;
+				
+				v_acft.setPrice(v_price);
+				v_acft.setRoute(v_prop.getRoute());
 			}
 
-			v_ds.put(myAgent.getLocalName() +"_PRICE", v_price);
+			v_ds.put(myAgent.getLocalName(), v_acft);
 			m_logger.info(myAgent.getLocalName() +" HAS PRICE UPDATED FROM => " + v_oldPrice +  " TO -> " + v_price);
 			m_finished = true;
 
