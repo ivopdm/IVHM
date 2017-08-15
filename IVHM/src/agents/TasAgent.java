@@ -55,30 +55,23 @@ public class TasAgent extends Agent {
 	@Override
 	protected void setup() {
 		super.setup();
-		/** 
-		 * TODO Preencher valores de voo, quanto vale aquele voo
-		 */
-		m_assignmentFlt1.put("ACFT_1", 2.0);
-		m_assignmentFlt1.put("ACFT_2", 4.0);
-		m_assignmentFlt1.put("ACFT_3", 0.0);
-		
-		m_assignmentFlt2.put("ACFT_1", 1.0);
-		m_assignmentFlt2.put("ACFT_2", 5.0);
-		m_assignmentFlt2.put("ACFT_3", 0.0);
-		
-		m_assignmentFlt3.put("ACFT_1", 1.0);
-		m_assignmentFlt3.put("ACFT_2", 3.0);
-		m_assignmentFlt3.put("ACFT_3", 2.0);
+
 		
 		// Configura o nome local do agente
 		getAID().setLocalName(AGENT_NAME);        
 		logger.info("Starting up " + getLocalName());
 
-				
+		/**
+		 * 	TODO tem que pegar a lista de Flights e iterar aqui	
+		 */
 		m_assignment.put(new Flight("FLT_1",m_assignmentFlt1), TasAgent.FLIGHT_UNASSIGNED);
 		m_assignment.put(new Flight("FLT_2",m_assignmentFlt2), TasAgent.FLIGHT_UNASSIGNED);
 		m_assignment.put(new Flight("FLT_3",m_assignmentFlt3), TasAgent.FLIGHT_UNASSIGNED);
 
+		/**
+		 * TODO tem que pegar a lista de voo e iterar aqui
+		 * Pega o ID e preenche onde esta ACFT_1
+		 */
 		m_recList.add(new AID("ACFT_1", AID.ISLOCALNAME));
 		m_recList.add(new AID("ACFT_2", AID.ISLOCALNAME));
 		m_recList.add(new AID("ACFT_3", AID.ISLOCALNAME));
