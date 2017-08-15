@@ -55,7 +55,7 @@ public class Aircraft {
 	}
 	
 	public Object getCurrLoc() {
-		// TODO Auto-generated method stub
+		// TODO Aeoroporto tipo GRU, GIG e etc
 		return null;
 	}
 
