@@ -2,11 +2,21 @@
  * 
  */
 package app;
+
 import jade.core.Runtime;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import commons.Aircraft;
+import commons.CarregarDadosExcel;
+import commons.Flight;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 
 import jade.wrapper.*;
+
 /**
  * @author IMEDEIRO
  * 
@@ -18,7 +28,10 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-				
+
+		List<Aircraft> listaDeAvioes = new java.util.ArrayList<Aircraft>();
+		List<Flight> listaFlights = new java.util.ArrayList<Flight>();
+
 		// Get a hold on JADE runtime
 		Runtime rt = Runtime.instance();
 
@@ -26,51 +39,73 @@ public class Main {
 		rt.setCloseVM(true);
 
 		// Launch a complete platform on the 8888 port
-		// create a default Profile 
+		// create a default Profile
 		Profile pMain = new ProfileImpl(null, 8888, null);
 
-		System.out.println("Launching a whole in-process platform..."+pMain);
+		System.out.println("Launching a whole in-process platform..." + pMain);
 		AgentContainer mc = rt.createMainContainer(pMain);
-		
+
 		System.out.println("Launching the rma agent on the main container ...");
-		//AgentController rma;
-		AgentController sniffer;
-		//AgentController introspector;
-		
+		// AgentController rma;
+		// AgentController sniffer;
+		AgentController introspector;
+		CarregarDadosExcel carregarDadosExcel = new CarregarDadosExcel();
+
 		try {
-			//rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new Object[0]); 
-			//rma.start();
-			
-			//sniffer = mc.createNewAgent("sniffer","jade.tools.sniffer.Sniffer", new Object[0]);
-			//sniffer.start();
-			
-			//introspector = mc.createNewAgent("introspector", "jade.tools.introspector.Introspector", new Object[0]);
-			//introspector.start();
-			/**
-			 * TODO Valores de preco serao o combustivel requerido para o voo x fator de consumo de combustivel do aviao
-			 */
-			AgentController acft_1 = 
-				mc.createNewAgent("ACFT_1", agents.AircraftAgent.class.getName(), new Object[]{new Double(2.0)} );
-			
-			AgentController acft_2 = 
-					mc.createNewAgent("ACFT_2", agents.AircraftAgent.class.getName(), new Object[]{new Double(4.0)} );
-			
-			AgentController acft_3 = 
-					mc.createNewAgent("ACFT_3", agents.AircraftAgent.class.getName(), new Object[]{new Double(1.0)} );
-			
-			AgentController tas = mc.createNewAgent("TAS", agents.TasAgent.class.getName(), new Object[0]);
-			
-			acft_1.start();
-			acft_2.start();
-			acft_3.start();
+
+			listaDeAvioes = carregarDadosExcel.montarListaAvioes();
+			listaFlights = carregarDadosExcel.montarListaFlights();
+
+			System.out.println("Avioes -------------------------------------");
+
+			for (int i = 0; i < listaDeAvioes.size(); i++) {
+				AgentController acft = mc.createNewAgent("ACFT_" + (i + 1), agents.AircraftAgent.class.getName(),
+						new Object[] { listaDeAvioes.get(i) });
+				acft.start();
+			}
+			AgentController tas = mc.createNewAgent("TAS", agents.TasAgent.class.getName(),
+					new Object[] { listaFlights });
 			tas.start();
-			
-			
+
+			// FAZER A MESMA COISA PARA O VOOS AQUI
+
+			// rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new
+			// Object[0]);
+			// rma.start();
+
+			// sniffer =
+			// mc.createNewAgent("sniffer","jade.tools.sniffer.Sniffer", new
+			// Object[0]);
+			// sniffer.start();
+
+			/*
+			 * COMENTADO PARA TESTE DEPOIS DECOMENTAR APARTIR DAQUI.
+			 * introspector = mc.createNewAgent("introspector",
+			 * "jade.tools.introspector.Introspector", new Object[0]);
+			 * introspector.start();
+			 * 
+			 * AgentController acft_1 = mc.createNewAgent("ACFT_1",
+			 * agents.AircraftAgent.class.getName(), new Object[]{new
+			 * Double(2.0)} );
+			 * 
+			 * AgentController acft_2 = mc.createNewAgent("ACFT_2",
+			 * agents.AircraftAgent.class.getName(), new Object[]{new
+			 * Double(4.0)} );
+			 * 
+			 * AgentController acft_3 = mc.createNewAgent("ACFT_3",
+			 * agents.AircraftAgent.class.getName(), new Object[]{new
+			 * Double(1.0)} );
+			 * 
+			 * AgentController tas = mc.createNewAgent("TAS",
+			 * agents.TasAgent.class.getName(), new Object[0]);
+			 * 
+			 * acft_1.start(); acft_2.start(); acft_3.start(); tas.start();
+			 */
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		
 	}
 
 }
