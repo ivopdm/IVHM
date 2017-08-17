@@ -90,6 +90,7 @@ public class TasAgent extends Agent {
 		//m_recList.add(new AID("ACFT_1", AID.ISLOCALNAME));
 		///m_recList.add(new AID("ACFT_2", AID.ISLOCALNAME));
 		//m_recList.add(new AID("ACFT_3", AID.ISLOCALNAME));
+		
 
 		m_fsm = new FSMBehaviour();
 
