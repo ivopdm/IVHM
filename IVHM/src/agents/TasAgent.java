@@ -79,18 +79,17 @@ public class TasAgent extends Agent {
 		listaFlights = (List<Flight>) objetoFlights[0];
 
 		for (int i = 0; i < listaFlights.size(); i++) {
-			Flight flight = listaFlights.get(i);
-			System.out.println(flight.getM_FlightID());
-
+			Flight flight = listaFlights.get(i);			
+			m_recList.add(new AID("ACFT_" + flight.getM_FlightID(), AID.ISLOCALNAME));
 		}
 
 		/**
 		 * TODO tem que pegar a lista de voo e iterar aqui Pega o ID e preenche
 		 * onde esta ACFT_1
 		 */
-		m_recList.add(new AID("ACFT_1", AID.ISLOCALNAME));
-		m_recList.add(new AID("ACFT_2", AID.ISLOCALNAME));
-		m_recList.add(new AID("ACFT_3", AID.ISLOCALNAME));
+		//m_recList.add(new AID("ACFT_1", AID.ISLOCALNAME));
+		///m_recList.add(new AID("ACFT_2", AID.ISLOCALNAME));
+		//m_recList.add(new AID("ACFT_3", AID.ISLOCALNAME));
 
 		m_fsm = new FSMBehaviour();
 
