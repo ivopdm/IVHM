@@ -56,6 +56,7 @@ public class CarregarDadosExcel {
 							Double valor = 0.05 * Math.random() + 1;
 							valor = Double.valueOf(String.format(Locale.US, "%.4f", valor));
 							aviao.setFator(valor);
+							aviao.setCurrLoc(sheet.getCell(2, row).getContents().toString());
 							listaAvioes.add(aviao);
 
 						}
@@ -109,7 +110,7 @@ public class CarregarDadosExcel {
 						flight.setM_destino(sheet.getCell(3, row).getContents().toString());
 					}
 					if (!sheet.getCell(4, row).getContents().isEmpty()) {
-						flight.setM_dataEta(toDate(sheet.getCell(4, row).getContents().toString(), DATA_HORA_PADRAO));
+						flight.setM_dataEtd(toDate(sheet.getCell(4, row).getContents().toString(), DATA_HORA_PADRAO));
 					}
 					if (!sheet.getCell(5, row).getContents().isEmpty()) {
 						flight.setM_dataEta(toDate(sheet.getCell(5, row).getContents().toString(), DATA_HORA_PADRAO));

@@ -9,6 +9,7 @@ import behaviours.CheckUnassigned;
 import behaviours.FinishAssignment;
 import behaviours.SendCfp;
 import behaviours.SendFeedback;
+import commons.Aircraft;
 import commons.Flight;
 import jade.core.AID;
 import jade.core.Agent;
@@ -48,8 +49,7 @@ public class TasAgent extends Agent {
 
 	private HashMap<Flight, String> m_assignment = new HashMap<Flight, String>();
 	private ArrayList<AID> m_recList = new ArrayList<AID>();
-	// private HashMap<String, Double> m_assignmentFlt1 = new HashMap<String,
-	// Double>();
+	//private HashMap<String, Double> m_assignmentFlt1 = new HashMap<String, Double>();
 	// private HashMap<String, Double> m_assignmentFlt2 = new HashMap<String,
 	// Double>();
 	// private HashMap<String, Double> m_assignmentFlt3 = new HashMap<String,
@@ -72,25 +72,34 @@ public class TasAgent extends Agent {
 		// TasAgent.FLIGHT_UNASSIGNED);
 		// m_assignment.put(new Flight("FLT_3",m_assignmentFlt3),
 		// TasAgent.FLIGHT_UNASSIGNED);
-		
-		Object[] objetoFlights = new Object[1];
-		objetoFlights = this.getArguments();
-		List<Flight> listaFlights = new ArrayList<Flight>();
-		listaFlights = (List<Flight>) objetoFlights[0];
 
+		Object[] objetoArgs = new Object[2];
+		objetoArgs = this.getArguments();
+
+		List<Flight> listaFlights = new ArrayList<Flight>();
+		listaFlights = (List<Flight>) objetoArgs[0];
 		for (int i = 0; i < listaFlights.size(); i++) {
-			Flight flight = listaFlights.get(i);			
-			m_recList.add(new AID("ACFT_" + flight.getM_FlightID(), AID.ISLOCALNAME));
+			Flight flight = listaFlights.get(i);
+			m_assignment.put(flight, TasAgent.FLIGHT_UNASSIGNED);
 		}
 
 		/**
 		 * TODO tem que pegar a lista de voo e iterar aqui Pega o ID e preenche
 		 * onde esta ACFT_1
 		 */
-		//m_recList.add(new AID("ACFT_1", AID.ISLOCALNAME));
-		///m_recList.add(new AID("ACFT_2", AID.ISLOCALNAME));
-		//m_recList.add(new AID("ACFT_3", AID.ISLOCALNAME));
+
+		// m_recList.add(new AID("ACFT_1", AID.ISLOCALNAME));
+		/// m_recList.add(new AID("ACFT_2", AID.ISLOCALNAME));
+		// m_recList.add(new AID("ACFT_3", AID.ISLOCALNAME));
+		// m_recList.add(new AID("ACFT_" + flight.getM_FlightID(),
+		// AID.ISLOCALNAME));
 		
+		List<Aircraft> listaAircrafts = new ArrayList<Aircraft>();
+		listaAircrafts = (List<Aircraft>) objetoArgs[1];
+		for (int i = 0; i < listaAircrafts.size(); i++) {
+			Aircraft aircraft = listaAircrafts.get(i);
+			m_recList.add(new AID(aircraft.getId().toString(), AID.ISLOCALNAME));
+		}
 
 		m_fsm = new FSMBehaviour();
 

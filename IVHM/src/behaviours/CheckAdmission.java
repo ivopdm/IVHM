@@ -30,8 +30,7 @@ public class CheckAdmission extends OneShotBehaviour {
 		m_acft = (Aircraft) ds.get(myAgent.getLocalName());
 
 		try {
-
-			Flight m_flt = (Flight) v_cfp.getContentObject();
+			 m_flt = (Flight) v_cfp.getContentObject();
 		} catch (UnreadableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

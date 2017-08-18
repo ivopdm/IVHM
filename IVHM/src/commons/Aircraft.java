@@ -4,8 +4,7 @@ import java.util.List;
 
 /**
  * 
- * @author ivopdm
- * TODO Implementar classe aircraft
+ * @author ivopdm TODO Implementar classe aircraft aviao
  */
 public class Aircraft {
 	private Long id;
@@ -13,6 +12,7 @@ public class Aircraft {
 	private Double fator;
 	private Double price;
 	private List<Flight> route;
+	private String currLoc;
 
 	public Long getId() {
 		return id;
@@ -53,11 +53,13 @@ public class Aircraft {
 	public void setRoute(List<Flight> route) {
 		this.route = route;
 	}
-	
-	public Object getCurrLoc() {
-		// TODO Aeoroporto tipo GRU, GIG e etc
-		return null;
+
+	public String getCurrLoc() {
+		return currLoc;
 	}
 
+	public void setCurrLoc(String currLoc) {
+		this.currLoc = currLoc;
+	}
 
 }

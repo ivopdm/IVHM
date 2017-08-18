@@ -4,6 +4,7 @@
 package app;
 
 import jade.core.Runtime;
+import jade.util.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,6 +24,8 @@ import jade.wrapper.*;
  *
  */
 public class Main {
+
+	private final static Logger logger = Logger.getMyLogger("Main.java");
 
 	/**
 	 * @param args
@@ -55,17 +58,24 @@ public class Main {
 
 			listaDeAvioes = carregarDadosExcel.montarListaAvioes();
 			listaFlights = carregarDadosExcel.montarListaFlights();
-
-			System.out.println("Avioes -------------------------------------");
-
-			for (int i = 0; i < listaDeAvioes.size(); i++) {
-				AgentController acft = mc.createNewAgent("ACFT_" + (i + 1), agents.AircraftAgent.class.getName(),
-						new Object[] { listaDeAvioes.get(i) });
-				acft.start();
+			
+			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
+				for (int i = 0; i < listaDeAvioes.size(); i++) {
+					AgentController acft = mc.createNewAgent(listaDeAvioes.get(i).getId().toString(), agents.AircraftAgent.class.getName(),
+							new Object[] { listaDeAvioes.get(i) });
+					acft.start();
+				}
+			} else {
+				logger.warning("A lista de Aircraft está vazia.");
 			}
-			AgentController tas = mc.createNewAgent("TAS", agents.TasAgent.class.getName(),
-					new Object[] { listaFlights });
-			tas.start();
+
+			if (listaDeAvioes != null && !listaDeAvioes.isEmpty() && listaFlights != null && !listaFlights.isEmpty()) {
+				AgentController tas = mc.createNewAgent("TAS", agents.TasAgent.class.getName(),
+						new Object[] { listaFlights, listaDeAvioes });
+				tas.start();
+			} else {
+				logger.warning("A lista de Flights está vazia.");
+			}
 
 			// FAZER A MESMA COISA PARA O VOOS AQUI
 
