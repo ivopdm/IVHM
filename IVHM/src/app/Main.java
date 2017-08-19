@@ -26,6 +26,7 @@ import jade.wrapper.*;
 public class Main {
 
 	private final static Logger logger = Logger.getMyLogger("Main.java");
+	private static String NOMETABELA = "FlightLegs.xls";
 
 	/**
 	 * @param args
@@ -56,8 +57,8 @@ public class Main {
 
 		try {
 
-			listaDeAvioes = carregarDadosExcel.montarListaAvioes();
-			listaFlights = carregarDadosExcel.montarListaFlights();
+			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);
+			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
 			
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {

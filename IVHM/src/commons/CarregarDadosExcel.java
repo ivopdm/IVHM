@@ -3,6 +3,7 @@ package commons;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -19,11 +20,13 @@ public class CarregarDadosExcel {
 	// public static final String DATA_HORA_PADRAO = "dd/MM/yyyy hh:mm:ss";
 	public static final String DATA_HORA_PADRAO = "MM/dd/yyyy hh:mm";
 
-	public List<Aircraft> montarListaAvioes() {
+	public List<Aircraft> montarListaAvioes(String nomeTalela) {
 		List<Aircraft> listaAvioes = new java.util.ArrayList<Aircraft>();
-		String v_caminho = "./src/resources/data/FlightLegs.xls";
+		String v_caminho = "./src/resources/data/" + nomeTalela;
 		// objeto relativo ao arquivo excel
 		Workbook workbook = null;
+		List<Flight> router = new ArrayList<Flight>();
+		Aircraft aviao = new Aircraft();		
 		try {
 			// Carrega planilha
 			WorkbookSettings config = new WorkbookSettings();
@@ -39,32 +42,50 @@ public class CarregarDadosExcel {
 			// Random gerador = new Random();
 			for (int row = 0; row < linhas; row++) {
 				if (row > 0) {
+
+					Flight flight = new Flight();
+					if (!sheet.getCell(1, row).getContents().isEmpty()) {
+						flight.setM_FlightID(sheet.getCell(1, row).getContents().toString());
+					}
+					if (!sheet.getCell(2, row).getContents().isEmpty()) {
+						flight.setM_origem(sheet.getCell(2, row).getContents().toString());
+					}
+					if (!sheet.getCell(3, row).getContents().isEmpty()) {
+						flight.setM_destino(sheet.getCell(3, row).getContents().toString());
+					}
+					if (!sheet.getCell(4, row).getContents().isEmpty()) {
+						flight.setM_dataEtd(toDate(sheet.getCell(4, row).getContents().toString(), DATA_HORA_PADRAO));
+					}
+					if (!sheet.getCell(5, row).getContents().isEmpty()) {
+						flight.setM_dataEta(toDate(sheet.getCell(5, row).getContents().toString(), DATA_HORA_PADRAO));
+					}
+					if (Integer.valueOf(sheet.getCell(7, row).getContents()) == compara || compara == 0) {
+						router.add(flight);
+					}
+					if (Integer.valueOf(sheet.getCell(7, row).getContents()) != compara && compara != 0) {
+						aviao.setRoute(router);
+						router = new ArrayList<Flight>();
+						listaAvioes.add(aviao);
+						router.add(flight);
+					}
 					// verifica se coluna 0 (A) e linha row n�o � vazia
 					if (!sheet.getCell(7, row).getContents().isEmpty()) {
 						if (Integer.valueOf(sheet.getCell(7, row).getContents()) != compara) {
-							Aircraft aviao = new Aircraft();
-							// recupera informa��o da coluna A linha row.
-							aviao.setId(Long.valueOf(sheet.getCell(7, row).getContents().toString()));
 							compara = Integer.valueOf(sheet.getCell(7, row).getContents());
+							aviao = new Aircraft();
+							aviao.setId(Long.valueOf(sheet.getCell(7, row).getContents().toString()));
 							if (!sheet.getCell(6, row).getContents().isEmpty()) {
-								// recupera informa��o da coluna B linha row.
 								aviao.setNome(sheet.getCell(6, row).getContents().toString());
 							}
-							// Double valor = Math.random() + 1;
-							// valor = Double.valueOf(String.format(Locale.US,
-							// "%.2f", valor));
 							Double valor = 0.05 * Math.random() + 1;
 							valor = Double.valueOf(String.format(Locale.US, "%.4f", valor));
 							aviao.setFator(valor);
 							aviao.setCurrLoc(sheet.getCell(2, row).getContents().toString());
-							listaAvioes.add(aviao);
-
 						}
 					}
 				}
 
 			}
-
 		} catch (IOException e) {
 			logger.info("Erro: " + e.getMessage());
 		} catch (BiffException e) {
@@ -81,9 +102,9 @@ public class CarregarDadosExcel {
 		return listaAvioes;
 	}
 
-	public List<Flight> montarListaFlights() {
+	public List<Flight> montarListaFlights(String nomeTalela) {
 		List<Flight> listaFlights = new java.util.ArrayList<Flight>();
-		String v_caminho = "./src/resources/data/FlightLegs.xls";
+		String v_caminho = "./src/resources/data/" + nomeTalela;
 		// objeto relativo ao arquivo excel
 		Workbook workbook = null;
 		try {
@@ -115,9 +136,13 @@ public class CarregarDadosExcel {
 					if (!sheet.getCell(5, row).getContents().isEmpty()) {
 						flight.setM_dataEta(toDate(sheet.getCell(5, row).getContents().toString(), DATA_HORA_PADRAO));
 					}
-					Double valor = Math.random() * (10000.00 - 5000.00) + 5000.00;
-					valor = Double.valueOf(String.format(Locale.US, "%.0f", valor));
-					flight.setM_fuelKG(valor);
+					Double valorFuel = Math.random() * (10000.00 - 5000.00) + 5000.00;
+					valorFuel = Double.valueOf(String.format(Locale.US, "%.0f", valorFuel));
+					flight.setM_fuelKG(valorFuel);
+
+					Double flightValue = Math.random() * (50000.00 - 10000.00) + 5000.00;
+					flightValue = Double.valueOf(String.format(Locale.US, "%.0f", flightValue));
+					flight.setM_flightValue(flightValue);					
 
 					listaFlights.add(flight);
 				}

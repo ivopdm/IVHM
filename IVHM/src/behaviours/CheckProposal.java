@@ -64,7 +64,7 @@ public class CheckProposal extends SimpleBehaviour {
 			DataStore v_ds = getDataStore();
 			
 			Flight v_unassFlt = (Flight) v_ds.get(TasAgent.KEY_CURRENT_UNASSIGNED);
-			Double v_assignmentValue = v_unassFlt.getFlightValue();
+			Double v_assignmentValue = v_unassFlt.getM_flightValue();
 			
 			for (ACLMessage aclMessage : m_proposeList) {
 

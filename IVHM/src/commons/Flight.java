@@ -2,8 +2,6 @@ package commons;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-
 
 /**
  * 
@@ -11,29 +9,18 @@ import java.util.HashMap;
  * 
  */
 public class Flight implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashMap<String, Double> m_assignmentValue;
 	private String m_FlightID;
 	private String m_origem;
 	private String m_destino;
 	private Date m_dataEtd;
 	private Date m_dataEta;
-	private Double m_fuelKG;	
-
-	public Double getFlightValue() {
-		// TODO Implementar valor do voo
-		return null;
-	}
-
-	public Object getOrig() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+	private Double m_fuelKG;
+	private Double m_flightValue;
 
 	public String getM_FlightID() {
 		return m_FlightID;
@@ -83,9 +70,12 @@ public class Flight implements Serializable {
 		this.m_FlightID = m_FlightID;
 	}
 
-	public HashMap<String, Double> getM_assignmentValue() {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getM_flightValue() {
+		return m_flightValue;
 	}
-	
+
+	public void setM_flightValue(Double m_flightValue) {
+		this.m_flightValue = m_flightValue;
+	}
+
 }

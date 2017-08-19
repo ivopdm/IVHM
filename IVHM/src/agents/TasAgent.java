@@ -27,7 +27,7 @@ public class TasAgent extends Agent {
 	public static final int CONTAINS_UNASSIGNED = 1;
 	public static final int ALL_ASSIGNED = 2;
 
-	public static final int ACFT_QTY = 3;
+	public static int ACFT_QTY = 0;
 
 	// States
 	private static final String CHECK_ASSIGNMENT = "Check_for_unassigned";
@@ -96,6 +96,7 @@ public class TasAgent extends Agent {
 		
 		List<Aircraft> listaAircrafts = new ArrayList<Aircraft>();
 		listaAircrafts = (List<Aircraft>) objetoArgs[1];
+		ACFT_QTY = listaAircrafts.size();
 		for (int i = 0; i < listaAircrafts.size(); i++) {
 			Aircraft aircraft = listaAircrafts.get(i);
 			m_recList.add(new AID(aircraft.getId().toString(), AID.ISLOCALNAME));
