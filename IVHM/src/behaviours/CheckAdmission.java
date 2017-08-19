@@ -46,13 +46,10 @@ public class CheckAdmission extends OneShotBehaviour {
 			return AircraftAgent.ADMISSION_OK;
 		} else if (isSwap(m_flt, m_acft)) {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
-
 			return AircraftAgent.ADMISSION_OK;
 		} else if (isAdd(m_flt, m_acft)) {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
-
 			return AircraftAgent.ADMISSION_OK;
-
 		} else {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION NOK");
 			return AircraftAgent.ADMISSION_NOK;
@@ -66,10 +63,13 @@ public class CheckAdmission extends OneShotBehaviour {
 	 */
 	private boolean isAdd(Flight p_flt, Aircraft p_acft) {
 		Boolean retorno = Boolean.FALSE;
-		for (Flight flight : p_acft.getRoute()) {
-			if (p_flt.getM_origem().equals(flight.getM_destino()) && isMaior40(flight.getM_dataEtd(), flight.getM_dataEtd())) {
-				retorno = Boolean.TRUE;
-				break;
+		if (p_acft.getRoute()!= null) {
+			for (Flight flight : p_acft.getRoute()) {
+				if (p_flt.getM_origem().equals(flight.getM_destino())
+						&& isMaiorTAT(flight.getM_dataEtd(), flight.getM_dataEtd())) {
+					retorno = Boolean.TRUE;
+					break;
+				}
 			}
 		}
 
@@ -84,18 +84,23 @@ public class CheckAdmission extends OneShotBehaviour {
 	 */
 	private boolean isSwap(Flight p_flt, Aircraft p_acft) {
 		Boolean retorno = Boolean.FALSE;
-		for (Flight flight : p_acft.getRoute()) {
-			if (flight.getM_origem().equals(p_flt.getM_origem()) && flight.getM_destino().equals(p_flt.getM_destino()) && isMaior40(flight.getM_dataEtd(), flight.getM_dataEtd())) {
-				retorno = Boolean.TRUE;
-				break;
+		if (p_acft.getRoute()!= null) {
+			for (Flight flight : p_acft.getRoute()) {
+				if (flight.getM_origem().equals(p_flt.getM_origem())
+						&& flight.getM_destino().equals(p_flt.getM_destino())
+						&& isMaiorTAT(flight.getM_dataEtd(), flight.getM_dataEtd())) {
+					retorno = Boolean.TRUE;
+					break;
+				}
 			}
 		}
 
 		return retorno;
 	}
-	//implementar regra do calculo
-	private boolean isMaior40(Date inicio, Date fim){
-		
+
+	// implementar regra do calculo
+	private boolean isMaiorTAT(Date p_inicio, Date p_fim) {
+
 		return true;
 	}
 
