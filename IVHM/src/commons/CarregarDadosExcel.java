@@ -2,8 +2,6 @@ package commons;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,12 +10,11 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+import util.Data;
 
 public class CarregarDadosExcel {
 
 	private final Logger logger = Logger.getMyLogger(getClass().getName());
-	// public static final String DATA_HORA_PADRAO = "dd/MM/yyyy hh:mm:ss";
-	public static final String DATA_HORA_PADRAO = "MM/dd/yyyy hh:mm";
 
 	public List<Aircraft> montarListaAvioes(String nomeTalela) {
 		List<Aircraft> listaAvioes = new java.util.ArrayList<Aircraft>();
@@ -111,10 +108,12 @@ public class CarregarDadosExcel {
 						flight.setM_destino(sheet.getCell(3, row).getContents().toString());
 					}
 					if (!sheet.getCell(4, row).getContents().isEmpty()) {
-						flight.setM_dataEtd(toDate(sheet.getCell(4, row).getContents().toString(), DATA_HORA_PADRAO));
+						flight.setM_dataEtd(
+								Data.toDate(sheet.getCell(4, row).getContents().toString(), Data.DATA_HORA_PADRAO));
 					}
 					if (!sheet.getCell(5, row).getContents().isEmpty()) {
-						flight.setM_dataEta(toDate(sheet.getCell(5, row).getContents().toString(), DATA_HORA_PADRAO));
+						flight.setM_dataEta(
+								Data.toDate(sheet.getCell(5, row).getContents().toString(), Data.DATA_HORA_PADRAO));
 					}
 					Double valorFuel = Math.random() * (10000.00 - 5000.00) + 5000.00;
 					valorFuel = Double.valueOf(String.format(Locale.US, "%.0f", valorFuel));
@@ -144,14 +143,4 @@ public class CarregarDadosExcel {
 		return listaFlights;
 	}
 
-	public static Date toDate(String Data, String Padrao) {
-		Date DataAux = new Date();
-		SimpleDateFormat FormataDT = new SimpleDateFormat(Padrao);
-		try {
-			DataAux = FormataDT.parse(Data);
-		} catch (java.text.ParseException E) {
-			return null;
-		}
-		return DataAux;
-	}
 }

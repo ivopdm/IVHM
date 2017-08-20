@@ -10,6 +10,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.util.Logger;
+import util.Data;
 
 public class CheckAdmission extends OneShotBehaviour {
 
@@ -63,7 +64,7 @@ public class CheckAdmission extends OneShotBehaviour {
 	 */
 	private boolean isAdd(Flight p_flt, Aircraft p_acft) {
 		Boolean retorno = Boolean.FALSE;
-		if (p_acft.getRoute()!= null) {
+		if (p_acft.getRoute() != null) {
 			for (Flight flight : p_acft.getRoute()) {
 				if (p_flt.getM_origem().equals(flight.getM_destino())
 						&& isMaiorTAT(flight.getM_dataEtd(), flight.getM_dataEtd())) {
@@ -84,7 +85,7 @@ public class CheckAdmission extends OneShotBehaviour {
 	 */
 	private boolean isSwap(Flight p_flt, Aircraft p_acft) {
 		Boolean retorno = Boolean.FALSE;
-		if (p_acft.getRoute()!= null) {
+		if (p_acft.getRoute() != null) {
 			for (Flight flight : p_acft.getRoute()) {
 				if (flight.getM_origem().equals(p_flt.getM_origem())
 						&& flight.getM_destino().equals(p_flt.getM_destino())
@@ -100,8 +101,7 @@ public class CheckAdmission extends OneShotBehaviour {
 
 	// implementar regra do calculo
 	private boolean isMaiorTAT(Date p_inicio, Date p_fim) {
-
-		return true;
+		return Data.calculaDiasDiferencaEntreDatas(p_fim, p_inicio) > 40;
 	}
 
 }
