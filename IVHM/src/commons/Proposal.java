@@ -5,20 +5,22 @@ import java.util.List;
 
 public class Proposal {
 	private List<Flight> route = new ArrayList<Flight>();
-	
-	public double getPrice() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void setPrice(double v_price) {
-		// TODO Auto-generated method stub
-		
-	}
+	private Double price;
 
 	public List<Flight> getRoute() {
-		// TODO Auto-generated method stub
 		return route;
+	}
+
+	public void setRoute(List<Flight> route) {
+		this.route = route;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 }
