@@ -8,6 +8,7 @@ import behaviours.CheckProposal;
 import behaviours.CheckUnassigned;
 import behaviours.FinishAssignment;
 import behaviours.SendCfp;
+import behaviours.SendFdbckNoProp;
 import behaviours.SendFeedback;
 import commons.Aircraft;
 import commons.Flight;
@@ -26,6 +27,8 @@ public class TasAgent extends Agent {
 	// Triggers
 	public static final int CONTAINS_UNASSIGNED = 1;
 	public static final int ALL_ASSIGNED = 2;
+	public static final int NO_PROPOSAL = 3;
+	public static final int PROPOSAL = 4;
 
 	public static int ACFT_QTY = 0;
 
@@ -35,6 +38,7 @@ public class TasAgent extends Agent {
 	private static final String SEND_CFP = "Send_CFP";
 	private static final String CHECK_PROPOSAL = "Check_Proposal";
 	private static final String SEND_FEEDBACK = "SEND_FEEDBACK";
+	private static final String SEND_FDBK_NO_PROP = "Send_Fdbck_No_Proposal";
 
 	// Datastore keys
 	public static final String KEY_WIN_PROPOSAL = "WinnerProposal";
@@ -120,12 +124,17 @@ public class TasAgent extends Agent {
 		Behaviour sndFdbck = new SendFeedback();
 		sndFdbck.setDataStore(m_fsm.getDataStore());
 		m_fsm.registerState(sndFdbck, SEND_FEEDBACK);
+		
+		Behaviour sndFdbckNoProp = new SendFdbckNoProp();
+		sndFdbckNoProp.setDataStore(m_fsm.getDataStore());
+		m_fsm.registerState(sndFdbckNoProp, SEND_FDBK_NO_PROP);
 
 		// REGISTER TRANSITIONS
 		m_fsm.registerTransition(CHECK_ASSIGNMENT, FINISH_ASSIGNMENT, ALL_ASSIGNED);
 		m_fsm.registerTransition(CHECK_ASSIGNMENT, SEND_CFP, CONTAINS_UNASSIGNED);
 		m_fsm.registerDefaultTransition(SEND_CFP, CHECK_PROPOSAL);
-		m_fsm.registerDefaultTransition(CHECK_PROPOSAL, SEND_FEEDBACK);
+		m_fsm.registerTransition(CHECK_PROPOSAL, SEND_FEEDBACK, PROPOSAL);
+		m_fsm.registerTransition(CHECK_PROPOSAL, SEND_FDBK_NO_PROP, NO_PROPOSAL);
 		m_fsm.registerDefaultTransition(SEND_FEEDBACK, CHECK_ASSIGNMENT);
 
 		addBehaviour(m_fsm);
