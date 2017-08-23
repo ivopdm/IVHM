@@ -13,6 +13,7 @@ import jade.core.AID;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import java.util.ArrayList;
 
 public class SendCfp extends OneShotBehaviour {
 
@@ -25,7 +26,7 @@ public class SendCfp extends OneShotBehaviour {
 	private HashMap<Flight,String> m_assignment;
 
 	private List<AID> m_recList;
-
+	private List<Flight> m_unassignedList = new ArrayList<Flight>();
 	private final Logger m_logger = Logger.getLogger(getClass().getName()); 
 
 	public SendCfp(HashMap<Flight,String> p_assignment, List<AID> p_recList) {
@@ -44,31 +45,36 @@ public class SendCfp extends OneShotBehaviour {
 			v_cfp.addReceiver(aid);
 			m_logger.log(Level.INFO, "Receiver: {0}", aid.getLocalName() );
 		}
-		/**
-		 * Checa o voo que nao esta alocado,
-		 * e quando acha o primeiro nao alocado
-		 *  adiciona ao conteudo da mensagem
-		 */
-		for (Map.Entry<Flight, String> v_unAssign : m_assignment.entrySet()) {
-			if(v_unAssign.getValue().equals(TasAgent.FLIGHT_UNASSIGNED)){
+		
+		fillUnAssList(m_assignment);
 
-				try {
-					v_cfp.setContentObject(v_unAssign.getKey());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+		try {
+			Flight v_flight = m_unassignedList.remove(0);
+			v_cfp.setContentObject(v_flight);
+			myAgent.send(v_cfp);
+
+			v_ds.put(TasAgent.KEY_CURRENT_UNASSIGNED, v_flight);
+
+			m_logger.log(Level.INFO, "Unassigned FLIGHT -> {0}", 
+					v_flight.getM_FlightID());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private void fillUnAssList(HashMap<Flight, String> m_assignment2) {
+		if(m_unassignedList.isEmpty()){
+			for (Map.Entry<Flight, String> v_unAssign : m_assignment.entrySet()) {
+
+				if(v_unAssign.getValue().equals(TasAgent.FLIGHT_UNASSIGNED)){
+					m_unassignedList.add(v_unAssign.getKey());
 				}
-				
-				myAgent.send(v_cfp);
-
-				v_ds.put(TasAgent.KEY_CURRENT_UNASSIGNED, v_unAssign.getKey());
-
-				m_logger.log(Level.INFO, "Unassigned FLIGHT -> {0}", 
-						v_unAssign.getKey().getM_FlightID());
-
-				break;
 			}
 		}
+
 	}
 
 }
