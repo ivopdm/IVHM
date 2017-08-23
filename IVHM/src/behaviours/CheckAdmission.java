@@ -42,8 +42,7 @@ public class CheckAdmission extends OneShotBehaviour {
 
 	@Override
 	public int onEnd() {
-		// TODO checar substituicao por equals()
-		if (m_flt.getM_origem() == m_acft.getCurrLoc()) {
+		if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
 			return AircraftAgent.ADMISSION_OK;
 		} else if (isSwap(m_flt, m_acft)) {
