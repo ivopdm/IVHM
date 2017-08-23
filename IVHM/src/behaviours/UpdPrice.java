@@ -33,9 +33,10 @@ public class UpdPrice extends SimpleBehaviour {
 		m_finished = false;
 		DataStore v_ds = getDataStore();
 		Aircraft v_acft = (Aircraft) v_ds.get(myAgent.getLocalName());
-		double v_price = v_acft.getPrice();
-		double v_oldPrice = v_price;
 		Proposal v_prop = (Proposal) v_ds.get(myAgent.getLocalName() + "_PROPOSAL");
+		double v_price = v_prop.getPrice();
+		double v_oldPrice = v_price;
+		
 		
 		
 		ACLMessage v_propResp = myAgent.receive(m_mt);
