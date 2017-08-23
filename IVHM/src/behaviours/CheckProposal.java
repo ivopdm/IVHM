@@ -34,6 +34,8 @@ public class CheckProposal extends SimpleBehaviour {
 
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 
+	private int m_proposalStatus;
+
 	public CheckProposal(HashMap<Flight, String> p_assignment) {
 		m_assignment = p_assignment;
 	}
@@ -55,10 +57,12 @@ public class CheckProposal extends SimpleBehaviour {
 		}
 
 		if (m_proposal_counter == TasAgent.ACFT_QTY) {
-			//TODO IVO ANALISAR ESTA PARTE POIS ESTA DANDO ERRO
 			if (m_proposeList.isEmpty()) {
 				m_finished = true;
 				m_proposal_counter = 0;
+				
+				m_logger.info("NO PROPOSAL");
+				
 			} else {
 				m_finished = true;
 				m_proposal_counter = 0;
@@ -118,7 +122,11 @@ public class CheckProposal extends SimpleBehaviour {
 		}
 
 	}
-
+	
+	@Override
+	public int onEnd() {
+		return m_proposalStatus;
+	}
 	@Override
 	public boolean done() {
 		if (m_finished)
