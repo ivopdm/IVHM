@@ -3,11 +3,6 @@
  */
 package app;
 
-import jade.core.Runtime;
-import jade.util.Logger;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import commons.Aircraft;
@@ -15,8 +10,10 @@ import commons.CarregarDadosExcel;
 import commons.Flight;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
-
-import jade.wrapper.*;
+import jade.core.Runtime;
+import jade.util.Logger;
+import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
 
 /**
  * @author IMEDEIRO
