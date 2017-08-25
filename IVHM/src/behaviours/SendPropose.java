@@ -64,17 +64,10 @@ public class SendPropose extends OneShotBehaviour {
 		Double preco = 0D;
 		// se ja exister adicionar o voo na rota para atender este situação
 		if (m_acft != null) {
-			if(validarDestinoOrigem(v_flt)){
-				
-			}else if(isVooCandidatoMesmoLocalAviao(v_flt)){
-				
-			}else if(vooCandidatoMesmoOrigemDestinoRotaAtual(v_flt)){
-				
-			}else{
-				// TODO fazer oque se nao tender nenhum
+			if (validarDestinoOrigem(v_flt)) {
+			} else if (isVooCandidatoMesmoLocalAviao(v_flt)) {
+			} else if (vooCandidatoMesmoOrigemDestinoRotaAtual(v_flt)) {
 			}
-		} else {
-			// TODO fazer oque neste caso  adicionar o voo na rota
 		}
 		return preco;
 	}
@@ -88,22 +81,14 @@ public class SendPropose extends OneShotBehaviour {
 		List<Flight> listaPrice = new ArrayList<Flight>();
 		try {
 			if (v_flt != null) {
-				if (m_acft.getRoute() != null) {
-					// se for adiciona-se o voo a rota;
-					// corrir pois primeiro tenho que ordenar por horario
-
-					for (int i = 0; i < m_acft.getRoute().size(); i++) {
-						if (i == m_acft.getRoute().size() - 1) {
-							if (v_flt.getM_origem().equals(m_acft.getRoute().get(i).getM_destino())
-									&& CalcFlight.isMaiorTAT(v_flt.getM_dataEtd(), v_flt.getM_dataEtd())) {
-								listaPrice.add(v_flt);
-								isCanditatoValido = Boolean.TRUE;
-								retorno = Boolean.TRUE;
-							} else {
-								retorno = Boolean.FALSE;
-								isCanditatoValido = Boolean.FALSE;
-							}
-						}
+				if (m_acft.getRoute() != null && !m_acft.getRoute().isEmpty()) {
+					listaPrice.addAll(m_acft.getRoute());
+					Flight ultimoVoo = m_acft.getRoute().get(m_acft.getRoute().size() - 1);
+					if (v_flt.getM_origem().equals(ultimoVoo.getM_destino())
+							&& CalcFlight.isMaiorTAT(v_flt.getM_dataEtd(), ultimoVoo.getM_dataEta())) {
+						listaPrice.add(v_flt);
+						isCanditatoValido = Boolean.TRUE;
+						retorno = Boolean.TRUE;
 					}
 					if (isCanditatoValido) {
 						for (Flight flight : listaPrice) {
@@ -132,89 +117,103 @@ public class SendPropose extends OneShotBehaviour {
 		Double preco = 0D;
 		Boolean retorno = Boolean.FALSE;
 		Boolean isCanditatoValido = Boolean.FALSE;
-		List<Flight> listaPrice = new ArrayList<Flight>();
+		// List<Flight> listaPrice = new ArrayList<Flight>();
+		List<Flight> listaPriceNovaPosicao = new ArrayList<Flight>();
 		try {
-			if (m_acft.getRoute() != null) {
-				if (m_acft.getCurrLoc().equals(v_flt.getM_origem())) {
-					for (Flight flight : m_acft.getRoute()) {
-						if (flight.getM_destino().equals(v_flt.getM_destino())) {
+			if (m_acft.getCurrLoc().equals(v_flt.getM_origem())) {
+				retorno = Boolean.TRUE;
+				if (m_acft.getRoute() != null || !m_acft.getRoute().isEmpty()) {
+					listaPriceNovaPosicao.addAll(m_acft.getRoute());
+					for (Flight flight : listaPriceNovaPosicao) {
+						if (flight.getM_origem().equals(v_flt.getM_destino())) {
 							int tatRota = Data.calculaDiasDiferencaEntreDatas(flight.getM_dataEtd(),
-									flight.getM_dataEta());
-							int tatCandidato = Data.calculaDiasDiferencaEntreDatas(v_flt.getM_dataEtd(),
 									v_flt.getM_dataEta());
-							if (tatCandidato > 40 && tatCandidato < tatRota) {
-								listaPrice.add(v_flt);
+							if (tatRota > 40) {
 								isCanditatoValido = Boolean.TRUE;
+								break;
 							}
 						} else {
-							listaPrice.add(v_flt);
-							preco = (v_flt.getM_fuelKG() / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
-							Proposal proposal = new Proposal();
-							proposal.setPrice(preco);
-							proposal.setRoute(listaPrice);
-							v_ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
-							retorno = Boolean.FALSE;
+							listaPriceNovaPosicao.remove(flight);
 						}
-						break;
 					}
 					if (isCanditatoValido) {
-						for (int i = 0; i < m_acft.getRoute().size(); i++) {
-							if (i > 0) {
-								listaPrice.add(m_acft.getRoute().get(i));
-							}
-						}
-						for (Flight flight : listaPrice) {
-							preco += flight.getM_fuelKG();
-						}
-						preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
-						Proposal proposal = new Proposal();
-						proposal.setPrice(preco);
-						proposal.setRoute(m_acft.getRoute());
-						v_ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
+						listaPriceNovaPosicao.add(0, v_flt);
 					}
 				} else {
-					retorno = Boolean.FALSE;
+					listaPriceNovaPosicao.add(v_flt);
 				}
-			} else {
-				if (m_acft.getCurrLoc().equals(v_flt.getM_origem())) {
-					listaPrice.add(v_flt);
-					preco = (v_flt.getM_fuelKG() / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
-					Proposal proposal = new Proposal();
-					proposal.setPrice(preco);
-					proposal.setRoute(listaPrice);
-					v_ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
-					retorno = Boolean.TRUE;
-				} else {
-					retorno = Boolean.FALSE;
+			}
+			if (!listaPriceNovaPosicao.isEmpty()) {
+				for (Flight flight : listaPriceNovaPosicao) {
+					preco += flight.getM_fuelKG();
 				}
+				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
+				Proposal proposal = new Proposal();
+				proposal.setPrice(preco);
+				proposal.setRoute(m_acft.getRoute());
+				v_ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
 			}
 		} catch (Exception e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
 		} finally {
 			preco = null;
 			isCanditatoValido = null;
-			listaPrice = null;
+			listaPriceNovaPosicao = null;
 		}
 		return retorno;
 	}
 
 	// O voo candidato tem o mesmo origem e destino de um voo da rota atual do
 	// avião:
-	//TODO parei aki vou terminar amanha com base no isVooCandidatoMesmoLocalAviao
+	// TODO parei aki vou terminar amanha com base no
+	// isVooCandidatoMesmoLocalAviao
 	private Boolean vooCandidatoMesmoOrigemDestinoRotaAtual(Flight v_flt) {
-		Flight flightDesalocado = new Flight();
-		if (m_acft.getRoute() != null) {
-			for (int i = 0; i < m_acft.getRoute().size(); i++) {				
+		Double preco = 0D;
+		Boolean retorno = Boolean.FALSE;
+		Boolean isCanditatoValido = Boolean.FALSE;
+		// List<Flight> listaPrice = new ArrayList<Flight>();
+		List<Flight> listaPriceNovaPosicao = new ArrayList<Flight>();
+		try {
+			listaPriceNovaPosicao.addAll(m_acft.getRoute());
+
+			for (int i = 0; i < m_acft.getRoute().size(); i++) {
 				if (m_acft.getRoute().get(i).getM_origem().equals(v_flt.getM_origem())
 						&& m_acft.getRoute().get(i).getM_destino().equals(v_flt.getM_destino())) {
-					flightDesalocado = m_acft.getRoute().get(i);
-					m_acft.getRoute().remove(i);
-					m_acft.getRoute().add(i, v_flt);
-					break;
+					if (i > 0) {
+						int tatPrimeiro = Data.calculaDiasDiferencaEntreDatas(
+								m_acft.getRoute().get(i - 1).getM_dataEtd(), v_flt.getM_dataEta());
+						if (i < m_acft.getRoute().size() - 1) {
+							int tatUltimo = Data.calculaDiasDiferencaEntreDatas(m_acft.getRoute().get(i).getM_dataEtd(),
+									v_flt.getM_dataEta());
+							if (tatPrimeiro > 40 && tatUltimo > 40) {
+								isCanditatoValido = Boolean.TRUE;
+								listaPriceNovaPosicao.remove(i);
+								listaPriceNovaPosicao.add(v_flt);
+								break;
+							}
+						} else {
+							tatPrimeiro = Data.calculaDiasDiferencaEntreDatas(m_acft.getRoute().get(i).getM_dataEtd(),
+									v_flt.getM_dataEta());
+							if (tatPrimeiro > 40) {
+								isCanditatoValido = Boolean.TRUE;
+								listaPriceNovaPosicao.remove(i);
+								listaPriceNovaPosicao.add(v_flt);
+								break;
+							}
+						}
+
+					}
 				}
 			}
+
+		} catch (Exception e) {
+			m_logger.warning(myAgent.getLocalName() + e.getMessage());
+		} finally {
+			preco = null;
+			isCanditatoValido = null;
+			listaPriceNovaPosicao = null;
 		}
-		return true;
-	}	
+		return retorno;
+	}
 
 }

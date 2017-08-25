@@ -67,7 +67,7 @@ public class CheckAdmission extends OneShotBehaviour {
 		if (p_acft.getRoute() != null) {
 			for (Flight flight : p_acft.getRoute()) {
 				if (p_flt.getM_origem().equals(flight.getM_destino())
-						&& CalcFlight.isMaiorTAT(flight.getM_dataEtd(), flight.getM_dataEtd())) {
+						&& CalcFlight.isMaiorTAT(flight.getM_dataEta(), p_flt.getM_dataEtd())) {
 					retorno = Boolean.TRUE;
 					break;
 				}
