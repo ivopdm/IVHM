@@ -24,9 +24,12 @@ public class Data {
 	 * @param ETA
 	 * @return
 	 */
-	public static int calculaDiasDiferencaEntreDatas(Date ETD, Date ETA) {
-		long DAY = 24L * 60L * 60L * 1000L;
-		int dif = (int) ((ETD.getTime() - ETA.getTime()) / DAY);
-		return dif;
+	public static int calculaDiasDiferencaEntreDatas(Date ETD, Date ETA) {		
+		//long diferencaSegundos = (ETD.getTime() - ETA.getTime()) / (1000);
+	    //long diferencaMinutos = (ETD.getTime() - ETA.getTime()) / (1000*60);
+	    //long diferencaHoras = (ETD.getTime() - ETA.getTime()) / (1000*60*60);
+	    //long diferencaDias = (ETD.getTime() - ETA.getTime()) / (1000*60*60*24);
+	       
+		return((int) (ETD.getTime() - ETA.getTime()) / (1000*60));
 	}
 }

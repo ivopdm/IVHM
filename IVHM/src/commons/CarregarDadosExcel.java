@@ -2,6 +2,7 @@ package commons;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,6 +56,7 @@ public class CarregarDadosExcel {
 							valor = Double.valueOf(String.format(Locale.US, "%.4f", valor));
 							aviao.setFator(valor);
 							aviao.setCurrLoc(sheet.getCell(2, row).getContents().toString());
+							aviao.setRoute(new ArrayList<Flight>());
 							listaAvioes.add(aviao);
 
 						}

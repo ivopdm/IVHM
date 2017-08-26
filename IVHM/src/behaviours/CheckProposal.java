@@ -94,7 +94,11 @@ public class CheckProposal extends SimpleBehaviour {
 				m_logger.info(TasAgent.KEY_MAX_UTILITY + " => " + v_bidList.get(0));
 				// Difference between First and Second max value at current
 				// prices
-				v_ds.put(TasAgent.KEY_BID_INCREMENT, v_bidList.get(0) - v_bidList.get(1));
+				if(v_bidList.size() > 1){
+					v_ds.put(TasAgent.KEY_BID_INCREMENT, v_bidList.get(0) - v_bidList.get(1));
+				}else{
+					v_ds.put(TasAgent.KEY_BID_INCREMENT, v_bidList.get(0) - v_bidList.get(0));
+				}				
 				m_logger.info(TasAgent.KEY_BID_INCREMENT + " => " + v_ds.get(TasAgent.KEY_BID_INCREMENT));
 				// WinnerProposal
 				v_ds.put(TasAgent.KEY_WIN_PROPOSAL, m_winnerProp);

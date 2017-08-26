@@ -24,18 +24,23 @@ public class CheckAdmission extends OneShotBehaviour {
 	private Flight m_flt;
 	private Aircraft m_acft;
 	private Double VALORCOMBUSTIVEL = 531D;
+	DataStore ds;
+	ACLMessage v_cfp;
 
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 
 	@Override
 	public void action() {
-		ACLMessage v_cfp = new ACLMessage(ACLMessage.CFP);
-		DataStore ds = getDataStore();
+		v_cfp = new ACLMessage(ACLMessage.CFP);
+		ds = getDataStore();
 		v_cfp = (ACLMessage) ds.get("CFP");
 		m_acft = (Aircraft) ds.get(myAgent.getLocalName());
 
 		try {
 			m_flt = (Flight) v_cfp.getContentObject();
+			//TODO TESTES
+			m_flt.setM_origem("A");
+			m_flt.setM_destino("B");
 		} catch (UnreadableException e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
 			e.printStackTrace();
@@ -112,25 +117,35 @@ public class CheckAdmission extends OneShotBehaviour {
 		List<Flight> listaCloneRotaAtual = new ArrayList<Flight>();
 		try {
 			if (m_acft.getRoute() != null && !m_acft.getRoute().isEmpty()) {
+				CalcFlight.ordenaPorData(m_acft.getRoute());
 				listaCloneRotaAtual.addAll(m_acft.getRoute());
 				int posicao = 0;
 				for (Flight flight : listaCloneRotaAtual) {
-					posicao++;
 					// TEM VOO NA ROTA ANTES DO RECEBIDO
 					if (flight.getM_destino().equals(m_flt.getM_origem())
 							&& CalcFlight.isMaiorTAT(m_flt.getM_dataEtd(), flight.getM_dataEta())) {
 						propostaAceita = true;
-						listaCloneRotaAtual.remove(posicao + 1);
-						listaCloneRotaAtual.add(posicao + 1, m_flt);
+						if (listaCloneRotaAtual.size() > 1 && posicao < listaCloneRotaAtual.size()) {
+							listaCloneRotaAtual.remove(posicao + 1);
+							listaCloneRotaAtual.add(posicao + 1, m_flt);
+						} else {
+							listaCloneRotaAtual.add(posicao + 1, m_flt);
+						}
+
 						break;
 						// TEM VOO NA ROTA DEPOIS DO RECEBIDO
 					} else if (flight.getM_origem().equals(m_flt.getM_destino())
 							&& CalcFlight.isMaiorTAT(flight.getM_dataEtd(), m_flt.getM_dataEta())) {
-						listaCloneRotaAtual.remove(posicao - 1);
-						listaCloneRotaAtual.add(posicao - 1, m_flt);
 						propostaAceita = true;
-						break;
+						if (listaCloneRotaAtual.size() > 1 && posicao < listaCloneRotaAtual.size()) {
+							listaCloneRotaAtual.remove(posicao - 1);
+							listaCloneRotaAtual.add(posicao - 1, m_flt);							
+							break;
+						} else {
+							listaCloneRotaAtual.add(posicao + 1, m_flt);
+						}
 					}
+					posicao++;
 				}
 			} else {
 				if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
@@ -146,10 +161,19 @@ public class CheckAdmission extends OneShotBehaviour {
 				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
 				Proposal proposal = new Proposal();
 				proposal.setPrice(preco);
-				proposal.setRoute(m_acft.getRoute());
+				proposal.setRoute(listaCloneRotaAtual);
 				// ENVIAO o PROPOSE
+				ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
+
+				ACLMessage v_aclPropose = v_cfp.createReply();
+				v_aclPropose.setPerformative(ACLMessage.PROPOSE);
+				v_aclPropose.setContent(preco.toString());
+				myAgent.send(v_aclPropose);
+				m_logger.info(myAgent.getLocalName() + " proposes -> " + preco);
+
 			} else {
 				// ENVIAO o REFUSE
+				ds.put(myAgent.getLocalName() + "_REFUSE", "");
 			}
 		} catch (Exception e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());

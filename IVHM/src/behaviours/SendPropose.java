@@ -23,13 +23,15 @@ public class SendPropose extends OneShotBehaviour {
 	private static final long serialVersionUID = 3591700095749070623L;
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 	private Aircraft m_acft;
-	private DataStore v_ds;
+	private DataStore v_ds;	
 	private Double VALORCOMBUSTIVEL = 531D;
+	private Proposal m_prop;
 
 	@Override
 	public void action() {
 		v_ds = getDataStore();
 		m_acft = (Aircraft) v_ds.get(myAgent.getLocalName());
+		m_prop = (Proposal) v_ds.get(myAgent.getLocalName());
 		ACLMessage v_cfp = (ACLMessage) v_ds.get("CFP");
 
 		if (m_acft != null && m_acft.getRoute() != null) {
@@ -38,14 +40,14 @@ public class SendPropose extends OneShotBehaviour {
 
 		try {
 			Flight v_flt = (Flight) v_cfp.getContentObject();
-			Double v_price = routePrice(v_flt);
+			//Double v_price = routePrice(v_flt);
 			ACLMessage v_aclPropose = v_cfp.createReply();
 			v_aclPropose.setPerformative(ACLMessage.PROPOSE);
-			v_aclPropose.setContent(v_price.toString());
+			v_aclPropose.setContent(m_prop.getPrice().toString());
 
 			myAgent.send(v_aclPropose);
 
-			m_logger.info(myAgent.getLocalName() + " proposes -> " + v_price);
+			m_logger.info(myAgent.getLocalName() + " proposes -> " + m_prop.getPrice());
 
 		} catch (UnreadableException e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
@@ -64,10 +66,10 @@ public class SendPropose extends OneShotBehaviour {
 		Double preco = 0D;
 		// se ja exister adicionar o voo na rota para atender este situação
 		if (m_acft != null) {
-			if (validarDestinoOrigem(v_flt)) {
-			} else if (isVooCandidatoMesmoLocalAviao(v_flt)) {
-			} else if (vooCandidatoMesmoOrigemDestinoRotaAtual(v_flt)) {
-			}
+//			if (validarDestinoOrigem(v_flt)) {
+//			} else if (isVooCandidatoMesmoLocalAviao(v_flt)) {
+//			} else if (vooCandidatoMesmoOrigemDestinoRotaAtual(v_flt)) {
+//			}
 		}
 		return preco;
 	}

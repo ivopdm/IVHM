@@ -23,7 +23,8 @@ import jade.wrapper.AgentController;
 public class Main {
 
 	private final static Logger logger = Logger.getMyLogger("Main.java");
-	private static String NOMETABELA = "FlightLegs.xls";
+	//private static String NOMETABELA = "FlightLegs.xls";
+	private static String NOMETABELA = "teste.xls";
 
 	/**
 	 * @param args
@@ -54,8 +55,19 @@ public class Main {
 
 		try {
 
-			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);
+			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);			
 			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
+			
+			//TODO  para teste
+			for (Aircraft aircraft : listaDeAvioes) {							
+				//preimiero teste
+				//aircraft.getRoute().add(listaFlights.get(0));
+				//segundo teste
+				//aircraft.getRoute().add(listaFlights.get(1));
+				//terceiro
+				aircraft.setRoute(listaFlights);
+				System.out.println(listaFlights.get(0).getM_origem());
+			}
 			
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {
