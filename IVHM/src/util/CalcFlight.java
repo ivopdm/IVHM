@@ -8,11 +8,19 @@ import java.util.List;
 import commons.Flight;
 
 public class CalcFlight {
-	// implementar regra do calculo
-	public static boolean isMaiorTAT(Date p_inicio, Date p_fim) {
-		return Data.calculaDiasDiferencaEntreDatas(p_fim, p_inicio) > 40;
+	
+	/**
+	 * @param ETD
+	 * @param ETA
+	 * @return
+	 */
+	public static boolean isMaiorTAT(Date ETD, Date ETA) {
+		return Data.calculaDiasDiferencaEntreDatas(ETD, ETA) > 40;
 	}
 
+	/**
+	 * @param listaFlight
+	 */
 	public static void ordenaPorData(List<Flight> listaFlight) {
 		Collections.sort(listaFlight, new Comparator<Flight>() {
 			@Override

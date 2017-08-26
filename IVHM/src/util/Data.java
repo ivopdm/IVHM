@@ -18,15 +18,15 @@ public class Data {
 		return DataAux;
 	}
 
+	
 	/**
-	 * 
-	 * @param dataInicial
-	 * @param dataFinal
+	 * @param ETD
+	 * @param ETA
 	 * @return
 	 */
-	public static int calculaDiasDiferencaEntreDatas(Date p_dataInicial, Date p_dataFinal) {
+	public static int calculaDiasDiferencaEntreDatas(Date ETD, Date ETA) {
 		long DAY = 24L * 60L * 60L * 1000L;
-		int dif = (int) ((p_dataInicial.getTime() - p_dataFinal.getTime()) / DAY);
+		int dif = (int) ((ETD.getTime() - ETA.getTime()) / DAY);
 		return dif;
 	}
 }

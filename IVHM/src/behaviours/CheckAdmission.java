@@ -1,17 +1,18 @@
 package behaviours;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import agents.AircraftAgent;
 import commons.Aircraft;
 import commons.Flight;
+import commons.Proposal;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.util.Logger;
 import util.CalcFlight;
-import util.Data;
 
 public class CheckAdmission extends OneShotBehaviour {
 
@@ -22,6 +23,7 @@ public class CheckAdmission extends OneShotBehaviour {
 	private static final long serialVersionUID = 8628498715010608266L;
 	private Flight m_flt;
 	private Aircraft m_acft;
+	private Double VALORCOMBUSTIVEL = 531D;
 
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 
@@ -42,13 +44,7 @@ public class CheckAdmission extends OneShotBehaviour {
 
 	@Override
 	public int onEnd() {
-		if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
-			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
-			return AircraftAgent.ADMISSION_OK;
-		} else if (isSwap(m_flt, m_acft)) {
-			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
-			return AircraftAgent.ADMISSION_OK;
-		} else if (isAdd(m_flt, m_acft)) {
+		if (isAceitaPropostaVooCandidato()) {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
 			return AircraftAgent.ADMISSION_OK;
 		} else {
@@ -56,6 +52,17 @@ public class CheckAdmission extends OneShotBehaviour {
 			return AircraftAgent.ADMISSION_NOK;
 		}
 
+		/*
+		 * if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
+		 * m_logger.info(myAgent.getLocalName() + " => ADMISSION OK"); return
+		 * AircraftAgent.ADMISSION_OK; } else if (isSwap(m_flt, m_acft)) {
+		 * m_logger.info(myAgent.getLocalName() + " => ADMISSION OK"); return
+		 * AircraftAgent.ADMISSION_OK; } else if (isAdd(m_flt, m_acft)) {
+		 * m_logger.info(myAgent.getLocalName() + " => ADMISSION OK"); return
+		 * AircraftAgent.ADMISSION_OK; } else {
+		 * m_logger.info(myAgent.getLocalName() + " => ADMISSION NOK"); return
+		 * AircraftAgent.ADMISSION_NOK; }
+		 */
 	}
 
 	/**
@@ -97,6 +104,60 @@ public class CheckAdmission extends OneShotBehaviour {
 		}
 
 		return retorno;
+	}
+
+	private Boolean isAceitaPropostaVooCandidato() {
+		Double preco = 0D;
+		Boolean propostaAceita = false;
+		List<Flight> listaCloneRotaAtual = new ArrayList<Flight>();
+		try {
+			if (m_acft.getRoute() != null && !m_acft.getRoute().isEmpty()) {
+				listaCloneRotaAtual.addAll(m_acft.getRoute());
+				int posicao = 0;
+				for (Flight flight : listaCloneRotaAtual) {
+					posicao++;
+					// TEM VOO NA ROTA ANTES DO RECEBIDO
+					if (flight.getM_destino().equals(m_flt.getM_origem())
+							&& CalcFlight.isMaiorTAT(m_flt.getM_dataEtd(), flight.getM_dataEta())) {
+						propostaAceita = true;
+						listaCloneRotaAtual.remove(posicao + 1);
+						listaCloneRotaAtual.add(posicao + 1, m_flt);
+						break;
+						// TEM VOO NA ROTA DEPOIS DO RECEBIDO
+					} else if (flight.getM_origem().equals(m_flt.getM_destino())
+							&& CalcFlight.isMaiorTAT(flight.getM_dataEtd(), m_flt.getM_dataEta())) {
+						listaCloneRotaAtual.remove(posicao - 1);
+						listaCloneRotaAtual.add(posicao - 1, m_flt);
+						propostaAceita = true;
+						break;
+					}
+				}
+			} else {
+				if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
+					listaCloneRotaAtual.add(m_flt);
+					propostaAceita = Boolean.TRUE;
+				}
+			}
+			// REALIZA O CALCULO DA PROPOSTA SE PROPOSTA ACEITA E LISTA != VAZIA
+			if (propostaAceita && !listaCloneRotaAtual.isEmpty()) {
+				for (Flight flight : listaCloneRotaAtual) {
+					preco += flight.getM_fuelKG();
+				}
+				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
+				Proposal proposal = new Proposal();
+				proposal.setPrice(preco);
+				proposal.setRoute(m_acft.getRoute());
+				// ENVIAO o PROPOSE
+			} else {
+				// ENVIAO o REFUSE
+			}
+		} catch (Exception e) {
+			m_logger.warning(myAgent.getLocalName() + e.getMessage());
+		} finally {
+			preco = null;
+			listaCloneRotaAtual = null;
+		}
+		return propostaAceita;
 	}
 
 }
