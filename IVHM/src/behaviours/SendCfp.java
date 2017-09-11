@@ -46,7 +46,7 @@ public class SendCfp extends OneShotBehaviour {
 			m_logger.log(Level.INFO, "Receiver: {0}", aid.getLocalName() );
 		}
 		
-		fillUnAssList(m_assignment);
+		fillUnAssList();
 
 
 		try {
@@ -65,7 +65,7 @@ public class SendCfp extends OneShotBehaviour {
 
 	}
 
-	private void fillUnAssList(HashMap<Flight, String> m_assignment2) {
+	private void fillUnAssList() {
 		if(m_unassignedList.isEmpty()){
 			for (Map.Entry<Flight, String> v_unAssign : m_assignment.entrySet()) {
 

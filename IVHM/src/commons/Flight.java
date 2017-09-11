@@ -78,4 +78,30 @@ public class Flight implements Serializable {
 		this.m_flightValue = m_flightValue;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((m_FlightID == null) ? 0 : m_FlightID.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Flight other = (Flight) obj;
+		if (m_FlightID == null) {
+			if (other.m_FlightID != null)
+				return false;
+		} else if (!m_FlightID.equals(other.m_FlightID))
+			return false;
+		return true;
+	}
+
+	
 }

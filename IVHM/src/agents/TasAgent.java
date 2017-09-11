@@ -52,12 +52,7 @@ public class TasAgent extends Agent {
 
 	private HashMap<Flight, String> m_assignment = new HashMap<Flight, String>();
 	private ArrayList<AID> m_recList = new ArrayList<AID>();
-	//private HashMap<String, Double> m_assignmentFlt1 = new HashMap<String, Double>();
-	// private HashMap<String, Double> m_assignmentFlt2 = new HashMap<String,
-	// Double>();
-	// private HashMap<String, Double> m_assignmentFlt3 = new HashMap<String,
-	// Double>();
-
+	
 	@Override
 	protected void setup() {
 		super.setup();

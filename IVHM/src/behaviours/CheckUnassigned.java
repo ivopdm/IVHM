@@ -1,9 +1,7 @@
 package behaviours;
 
-import java.beans.ConstructorProperties;
 import java.util.HashMap;
 import java.util.Map;
-
 
 import agents.TasAgent;
 import commons.Flight;

@@ -40,8 +40,8 @@ public class CheckAdmission extends OneShotBehaviour {
 			// Recebe voo
 			m_flt = (Flight) v_cfp.getContentObject();
 			// TODO TESTES
-			m_flt.setM_origem("A");
-			m_flt.setM_destino("B");
+//			m_flt.setM_origem("A");
+//			m_flt.setM_destino("B");
 		} catch (UnreadableException e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
 			e.printStackTrace();
@@ -61,7 +61,8 @@ public class CheckAdmission extends OneShotBehaviour {
 	}
 
 	private Boolean isAceitaPropostaVooCandidato() {
-		Double preco = 0D;
+		Double preco = Double.valueOf(0D);
+		Double v_fltValue = Double.valueOf(0D);
 		Boolean propostaAceita = false;
 
 		List<Flight> v_listaRotaProposta = new ArrayList<Flight>();
@@ -119,10 +120,14 @@ public class CheckAdmission extends OneShotBehaviour {
 			if (propostaAceita && !v_listaRotaProposta.isEmpty()) {
 				for (Flight flight : v_listaRotaProposta) {
 					preco += flight.getM_fuelKG();
+					v_fltValue += flight.getM_flightValue();
 				}
-				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
+//				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
+				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL + m_acft.getPrice();
+				v_fltValue -= preco;
 				Proposal proposal = new Proposal();
-				proposal.setPrice(preco);
+				//proposal.setPrice(preco);
+				proposal.setPrice(v_fltValue);
 				proposal.setRoute(v_listaRotaProposta);
 
 				// ENVIAO o PROPOSE
@@ -133,6 +138,7 @@ public class CheckAdmission extends OneShotBehaviour {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
 		} finally {
 			preco = null;
+			v_fltValue = null;
 			v_listaRotaProposta = null;
 		}
 		return propostaAceita;

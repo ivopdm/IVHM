@@ -9,8 +9,8 @@ import java.util.List;
 public class Aircraft {
 	private Long id;
 	private String nome;
-	private Double fator;
-	private Double price;
+	private Double fator = Double.valueOf(1.0);
+	private Double price = Double.valueOf(0.0);
 	private List<Flight> route;
 	private String currLoc;
 

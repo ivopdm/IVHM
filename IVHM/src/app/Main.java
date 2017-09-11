@@ -57,18 +57,18 @@ public class Main {
 
 			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);			
 			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
-			
+
 			//TODO  para teste
-			for (Aircraft aircraft : listaDeAvioes) {							
-				//preimiero teste
-				//aircraft.getRoute().add(listaFlights.get(0));
-				//segundo teste
-				//aircraft.getRoute().add(listaFlights.get(1));
-				//terceiro
-				aircraft.setRoute(listaFlights);
-				System.out.println(listaFlights.get(0).getM_origem());
-			}
-			
+			//			for (Aircraft aircraft : listaDeAvioes) {							
+			//				//preimiero teste
+			//				//aircraft.getRoute().add(listaFlights.get(0));
+			//				//segundo teste
+			//				//aircraft.getRoute().add(listaFlights.get(1));
+			//				//terceiro
+			//				aircraft.setRoute(listaFlights);
+			//				System.out.println(listaFlights.get(0).getM_origem());
+			//			}
+
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {
 					AgentController acft = mc.createNewAgent(listaDeAvioes.get(i).getId().toString(), agents.AircraftAgent.class.getName(),
@@ -76,7 +76,7 @@ public class Main {
 					acft.start();
 				}
 			} else {
-				logger.warning("A lista de Aircraft está vazia.");
+				logger.warning("A lista de Aircraft estï¿½ vazia.");
 			}
 
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty() && listaFlights != null && !listaFlights.isEmpty()) {
@@ -84,7 +84,7 @@ public class Main {
 						new Object[] { listaFlights, listaDeAvioes });
 				tas.start();
 			} else {
-				logger.warning("A lista de Flights está vazia.");
+				logger.warning("A lista de Flights estï¿½ vazia.");
 			}
 
 			// FAZER A MESMA COISA PARA O VOOS AQUI
@@ -98,29 +98,10 @@ public class Main {
 			// Object[0]);
 			// sniffer.start();
 
-			/*
-			 * COMENTADO PARA TESTE DEPOIS DECOMENTAR APARTIR DAQUI.
-			 * introspector = mc.createNewAgent("introspector",
-			 * "jade.tools.introspector.Introspector", new Object[0]);
-			 * introspector.start();
-			 * 
-			 * AgentController acft_1 = mc.createNewAgent("ACFT_1",
-			 * agents.AircraftAgent.class.getName(), new Object[]{new
-			 * Double(2.0)} );
-			 * 
-			 * AgentController acft_2 = mc.createNewAgent("ACFT_2",
-			 * agents.AircraftAgent.class.getName(), new Object[]{new
-			 * Double(4.0)} );
-			 * 
-			 * AgentController acft_3 = mc.createNewAgent("ACFT_3",
-			 * agents.AircraftAgent.class.getName(), new Object[]{new
-			 * Double(1.0)} );
-			 * 
-			 * AgentController tas = mc.createNewAgent("TAS",
-			 * agents.TasAgent.class.getName(), new Object[0]);
-			 * 
-			 * acft_1.start(); acft_2.start(); acft_3.start(); tas.start();
-			 */
+			introspector = mc.createNewAgent("introspector",
+					"jade.tools.introspector.Introspector", new Object[0]);
+			introspector.start();
+
 
 		} catch (Exception e) {
 			e.printStackTrace();

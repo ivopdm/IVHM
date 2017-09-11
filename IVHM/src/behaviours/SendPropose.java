@@ -1,5 +1,7 @@
 package behaviours;
 
+import java.io.IOException;
+
 import commons.Proposal;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
@@ -29,7 +31,13 @@ public class SendPropose extends OneShotBehaviour {
 
 		ACLMessage v_aclPropose = v_cfp.createReply();
 		v_aclPropose.setPerformative(ACLMessage.PROPOSE);
-		v_aclPropose.setContent(v_prop.getPrice().toString());
+		//v_aclPropose.setContent(v_prop.getPrice().toString());
+		try {
+			v_aclPropose.setContentObject(v_prop);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		myAgent.send(v_aclPropose);
 

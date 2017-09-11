@@ -26,7 +26,7 @@ public class UpdPrice extends SimpleBehaviour {
 	private MessageTemplate m_op1 = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 	private MessageTemplate m_op2 = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
 	private MessageTemplate m_mt = MessageTemplate.or(m_op1, m_op2);
-	private final double EPSON = 0.1;
+	private final double EPSON = 10;
 
 	@Override
 	public void action() {
@@ -34,9 +34,10 @@ public class UpdPrice extends SimpleBehaviour {
 		DataStore v_ds = getDataStore();
 		Aircraft v_acft = (Aircraft) v_ds.get(myAgent.getLocalName());
 		Proposal v_prop = (Proposal) v_ds.get(myAgent.getLocalName() + "_PROPOSAL");
-		double v_price = v_prop.getPrice();
+//		double v_price = v_prop.getPrice();
+//		double v_oldPrice = v_price;
+		double v_price = v_acft.getPrice();
 		double v_oldPrice = v_price;
-		
 		
 		
 		ACLMessage v_propResp = myAgent.receive(m_mt);
