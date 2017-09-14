@@ -52,7 +52,8 @@ public class UpdPrice extends SimpleBehaviour {
 				v_acft.setPrice(v_price);
 				v_acft.setRoute(v_prop.getRoute());
 			}
-
+			v_prop.setPrice(null);
+			v_prop.setRoute(null);
 			v_ds.put(myAgent.getLocalName(), v_acft);
 			m_logger.info(myAgent.getLocalName() +" HAS PRICE UPDATED FROM => " + v_oldPrice +  " TO -> " + v_price);
 			m_finished = true;

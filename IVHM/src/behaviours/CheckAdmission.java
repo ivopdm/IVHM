@@ -23,19 +23,22 @@ public class CheckAdmission extends OneShotBehaviour {
 	private static final long serialVersionUID = 8628498715010608266L;
 	private Flight m_flt;
 	private Aircraft m_acft;
-	private Double VALORCOMBUSTIVEL = 531D;
+	private final Double VALORCOMBUSTIVEL = Double.valueOf(531D);
 	DataStore ds;
-	ACLMessage v_cfp;
+	
+	
+	private Proposal proposal = new Proposal();
 
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 
 	@Override
 	public void action() {
-		v_cfp = new ACLMessage(ACLMessage.CFP);
+		
 		ds = getDataStore();
-		v_cfp = (ACLMessage) ds.get("CFP");
+		ACLMessage v_cfp = (ACLMessage) ds.get("CFP");
 		m_acft = (Aircraft) ds.get(myAgent.getLocalName());
-
+		
+		
 		try {
 			// Recebe voo
 			m_flt = (Flight) v_cfp.getContentObject();
@@ -50,11 +53,16 @@ public class CheckAdmission extends OneShotBehaviour {
 
 	@Override
 	public int onEnd() {
+		
 		if (isAceitaPropostaVooCandidato()) {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
+			
+			System.gc();
 			return AircraftAgent.ADMISSION_OK;
 		} else {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION NOK");
+			
+			System.gc();
 			return AircraftAgent.ADMISSION_NOK;
 		}
 
@@ -64,8 +72,8 @@ public class CheckAdmission extends OneShotBehaviour {
 		Double preco = Double.valueOf(0D);
 		Double v_fltValue = Double.valueOf(0D);
 		Boolean propostaAceita = false;
-
-		List<Flight> v_listaRotaProposta = new ArrayList<Flight>();
+		List<Flight> m_listaRotaProposta = new ArrayList<Flight>();
+		
 		try {
 			// Rota do aviao vazia?
 			if (m_acft.getRoute() != null && !m_acft.getRoute().isEmpty()) {
@@ -78,10 +86,10 @@ public class CheckAdmission extends OneShotBehaviour {
 						propostaAceita = true;
 
 						for (int i = 0; i <= m_acft.getRoute().indexOf(flight); i++) {
-							v_listaRotaProposta.add(m_acft.getRoute().get(i));
+							m_listaRotaProposta.add(m_acft.getRoute().get(i));
 						}
 
-						v_listaRotaProposta.add(m_flt);
+						m_listaRotaProposta.add(m_flt);
 
 					}
 				}
@@ -89,7 +97,7 @@ public class CheckAdmission extends OneShotBehaviour {
 				if (!propostaAceita) {
 					// Origem do voo igual a local do aviao, caso lista vazia
 					if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
-						v_listaRotaProposta.add(m_flt);
+						m_listaRotaProposta.add(m_flt);
 						propostaAceita = Boolean.TRUE;
 					}
 				}
@@ -101,7 +109,7 @@ public class CheckAdmission extends OneShotBehaviour {
 								&& CalcFlight.isMaiorTAT(flight.getM_dataEtd(), m_flt.getM_dataEta())) {
 							propostaAceita = true;
 							for (int i = m_acft.getRoute().indexOf(flight); i <= m_acft.getRoute().size() - 1; i++) {
-								v_listaRotaProposta.add(m_acft.getRoute().get(i));
+								m_listaRotaProposta.add(m_acft.getRoute().get(i));
 							}
 
 						}
@@ -111,24 +119,25 @@ public class CheckAdmission extends OneShotBehaviour {
 			} else {
 				// Origem do voo igual a local do aviao, caso lista vazia
 				if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
-					v_listaRotaProposta.add(m_flt);
+					m_listaRotaProposta.add(m_flt);
 					propostaAceita = Boolean.TRUE;
 				}
 			}
 
 			// REALIZA O CALCULO DA PROPOSTA SE PROPOSTA ACEITA E LISTA != VAZIA
-			if (propostaAceita && !v_listaRotaProposta.isEmpty()) {
-				for (Flight flight : v_listaRotaProposta) {
+			if (propostaAceita && !m_listaRotaProposta.isEmpty()) {
+				for (Flight flight : m_listaRotaProposta) {
 					preco += flight.getM_fuelKG();
 					v_fltValue += flight.getM_flightValue();
 				}
 //				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
 				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL + m_acft.getPrice();
 				v_fltValue -= preco;
-				Proposal proposal = new Proposal();
+				
 				//proposal.setPrice(preco);
 				proposal.setPrice(v_fltValue);
-				proposal.setRoute(v_listaRotaProposta);
+				proposal.setRoute(m_listaRotaProposta);
+				
 
 				// ENVIAO o PROPOSE
 				ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
@@ -139,8 +148,10 @@ public class CheckAdmission extends OneShotBehaviour {
 		} finally {
 			preco = null;
 			v_fltValue = null;
-			v_listaRotaProposta = null;
+			m_listaRotaProposta = null;
+			
 		}
+		
 		return propostaAceita;
 	}
 

@@ -29,7 +29,9 @@ public class CheckProposal extends SimpleBehaviour {
 	private MessageTemplate m_op1 = MessageTemplate.MatchPerformative(ACLMessage.PROPOSE);
 	private MessageTemplate m_op2 = MessageTemplate.MatchPerformative(ACLMessage.REFUSE);
 	private MessageTemplate m_mt = MessageTemplate.or(m_op1, m_op2);
-	private List<ACLMessage> m_proposeList = new ArrayList<ACLMessage>(TasAgent.ACFT_QTY);
+	
+	private List<Double> m_bidList = new ArrayList<Double>();
+	private List<Flight> m_winRoute = new ArrayList<Flight>();
 
 	private ACLMessage m_winnerProp;
 	private HashMap<Flight, String> m_assignment;
@@ -46,7 +48,8 @@ public class CheckProposal extends SimpleBehaviour {
 	public void action() {
 		m_finished = false;
 		ACLMessage v_aclMsgProposal = myAgent.receive(m_mt);
-
+		List<ACLMessage> m_proposeList = new ArrayList<ACLMessage>(TasAgent.ACFT_QTY);
+		
 		if (v_aclMsgProposal != null) {
 			m_proposal_counter++;
 
@@ -68,27 +71,22 @@ public class CheckProposal extends SimpleBehaviour {
 				
 			} else {
 				m_finished = true;
-				m_proposal_counter = 0;
-				List<Double> v_bidList = new ArrayList<Double>();
+				m_proposal_counter = 0;				
 				double v_max = Double.NEGATIVE_INFINITY;
 				DataStore v_ds = getDataStore();
-
-				//Flight v_unassFlt = (Flight) v_ds.get(TasAgent.KEY_CURRENT_UNASSIGNED);
-				//Double v_assignmentValue = v_unassFlt.getM_flightValue();
-
-				List<Flight> v_winRoute = new ArrayList<Flight>();
+				
 				for (ACLMessage aclMessage : m_proposeList) {
 					try {
 						Proposal v_prop = (Proposal) aclMessage.getContentObject();
 						//Double v_price = v_prop.getPrice();
 						//double v_bid = v_assignmentValue - v_price;
 						double v_bid = v_prop.getPrice();
-						v_bidList.add(v_bid);
+						m_bidList.add(v_bid);
 
 						if (v_bid > v_max) {
 							v_max = v_bid;
 							m_winnerProp = aclMessage;
-							v_winRoute  = v_prop.getRoute();
+							m_winRoute  = v_prop.getRoute();
 							
 						}
 					} catch (UnreadableException e) {
@@ -98,16 +96,16 @@ public class CheckProposal extends SimpleBehaviour {
 
 				}
 
-				Collections.sort(v_bidList, Collections.reverseOrder());
+				Collections.sort(m_bidList, Collections.reverseOrder());
 				// Max value at current prices
-				v_ds.put(TasAgent.KEY_MAX_UTILITY, v_bidList.get(0));
-				m_logger.info(TasAgent.KEY_MAX_UTILITY + " => " + v_bidList.get(0));
+				v_ds.put(TasAgent.KEY_MAX_UTILITY, m_bidList.get(0));
+				m_logger.info(TasAgent.KEY_MAX_UTILITY + " => " + m_bidList.get(0));
 				// Difference between First and Second max value at current
 				// prices
-				if(v_bidList.size() > 1){
-					v_ds.put(TasAgent.KEY_BID_INCREMENT, v_bidList.get(0) - v_bidList.get(1));
+				if(m_bidList.size() > 1){
+					v_ds.put(TasAgent.KEY_BID_INCREMENT, m_bidList.get(0) - m_bidList.get(1));
 				}else{
-					v_ds.put(TasAgent.KEY_BID_INCREMENT, v_bidList.get(0) - v_bidList.get(0));
+					v_ds.put(TasAgent.KEY_BID_INCREMENT, m_bidList.get(0) - m_bidList.get(0));
 				}				
 				m_logger.info(TasAgent.KEY_BID_INCREMENT + " => " + v_ds.get(TasAgent.KEY_BID_INCREMENT));
 				// WinnerProposal
@@ -128,7 +126,7 @@ public class CheckProposal extends SimpleBehaviour {
 				}
 				
 				//Update assignment set with new assignment involving winner proponent
-				for (Flight flt : v_winRoute) {
+				for (Flight flt : m_winRoute) {
 					m_assignment.put(flt, 
 							m_winnerProp.getSender().getLocalName());
 				}
@@ -136,7 +134,9 @@ public class CheckProposal extends SimpleBehaviour {
 				
 								
 				m_proposalStatus = TasAgent.PROPOSAL;
-				m_proposeList = new ArrayList<ACLMessage>(TasAgent.ACFT_QTY);
+				m_proposeList = null;
+				m_bidList.clear();
+				m_winRoute.clear();
 				
 				
 			}

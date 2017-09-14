@@ -13,6 +13,8 @@ import jade.core.AID;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import util.CalcFlight;
+
 import java.util.ArrayList;
 
 public class SendCfp extends OneShotBehaviour {
@@ -73,6 +75,8 @@ public class SendCfp extends OneShotBehaviour {
 					m_unassignedList.add(v_unAssign.getKey());
 				}
 			}
+			
+			CalcFlight.ordenaPorData(m_unassignedList);
 		}
 
 	}

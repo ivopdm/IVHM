@@ -16,27 +16,28 @@ public class CheckCFP extends SimpleBehaviour {
 	 */
 	private static final long serialVersionUID = -789907945940792560L;
 	private MessageTemplate m_mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
-	private Flight m_cfp_content;
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 	private boolean m_finished;
 	
 	@Override
 	public void action() {
 		m_finished = false;
-		ACLMessage v_cfp = new ACLMessage(ACLMessage.CFP);
-		v_cfp = myAgent.receive(m_mt);
+		//ACLMessage v_cfp = new ACLMessage(ACLMessage.CFP);
+		//v_cfp = myAgent.receive(m_mt);
+		ACLMessage v_cfp = myAgent.receive(m_mt);
 		
 		if(v_cfp != null){
 			m_finished = true;
 			
 			try {
-				m_cfp_content = (Flight) v_cfp.getContentObject();
+				Flight v_cfp_content = (Flight) v_cfp.getContentObject();
+				m_logger.info(myAgent.getLocalName() + " received content -> " + v_cfp_content.getM_FlightID());
 			} catch (UnreadableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			m_logger.info(myAgent.getLocalName() + " received content -> " + m_cfp_content.getM_FlightID());
+			
 				
 			DataStore v_ds = getDataStore();
 			v_ds.put("CFP", v_cfp);			
@@ -49,6 +50,12 @@ public class CheckCFP extends SimpleBehaviour {
 	@Override
 	public boolean done() {
 		return m_finished;
+	}
+	
+	@Override
+	public int onEnd() {
+		System.gc();
+		return super.onEnd();
 	}
 
 }
