@@ -22,16 +22,17 @@ public class SendFeedback extends OneShotBehaviour {
 	
 	
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
+	private ACLMessage v_msg2loser = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 	
 	@Override
 	public void action() {
 		DataStore v_ds;
 		v_ds = getDataStore();
 		
-		List<ACLMessage> v_proposeList = new ArrayList<ACLMessage>(TasAgent.ACFT_QTY);
+		
 		ACLMessage v_win_proposal = (ACLMessage) v_ds.get(TasAgent.KEY_WIN_PROPOSAL);
 		Double v_bidIncrement = (Double) v_ds.get(TasAgent.KEY_BID_INCREMENT);
-		v_proposeList = (ArrayList<ACLMessage>) v_ds.get(TasAgent.KEY_PROPONENT_LIST);
+		List<ACLMessage> v_proposeList = (ArrayList<ACLMessage>) v_ds.get(TasAgent.KEY_PROPONENT_LIST);
 		
 		ACLMessage v_msg2win = v_win_proposal.createReply();		
 		v_msg2win.setContent(v_bidIncrement.toString());
@@ -39,14 +40,15 @@ public class SendFeedback extends OneShotBehaviour {
 		
 		myAgent.send(v_msg2win);
 		
-		ACLMessage v_msg2loser = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 		
+		v_msg2loser.clearAllReceiver();
 		for (ACLMessage aclMessage : v_proposeList) {
 			if(aclMessage.getSender() != v_win_proposal.getSender())
 				v_msg2loser.addReceiver(aclMessage.getSender());
 		}
 				
 		myAgent.send(v_msg2loser);
+		v_proposeList.clear();
 		m_logger.info("FEEDBACK SENT TO ACFTs");
 	}
 

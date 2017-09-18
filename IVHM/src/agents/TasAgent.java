@@ -8,7 +8,6 @@ import behaviours.CheckProposal;
 import behaviours.CheckUnassigned;
 import behaviours.FinishAssignment;
 import behaviours.SendCfp;
-import behaviours.SendFdbckNoProp;
 import behaviours.SendFeedback;
 import commons.Aircraft;
 import commons.Flight;

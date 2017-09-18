@@ -29,7 +29,7 @@ public class CheckProposal extends SimpleBehaviour {
 	private MessageTemplate m_op1 = MessageTemplate.MatchPerformative(ACLMessage.PROPOSE);
 	private MessageTemplate m_op2 = MessageTemplate.MatchPerformative(ACLMessage.REFUSE);
 	private MessageTemplate m_mt = MessageTemplate.or(m_op1, m_op2);
-	
+	private List<ACLMessage> m_proposeList = new ArrayList<ACLMessage>(TasAgent.ACFT_QTY);
 	private List<Double> m_bidList = new ArrayList<Double>();
 	private List<Flight> m_winRoute = new ArrayList<Flight>();
 
@@ -48,7 +48,7 @@ public class CheckProposal extends SimpleBehaviour {
 	public void action() {
 		m_finished = false;
 		ACLMessage v_aclMsgProposal = myAgent.receive(m_mt);
-		List<ACLMessage> m_proposeList = new ArrayList<ACLMessage>(TasAgent.ACFT_QTY);
+		
 		
 		if (v_aclMsgProposal != null) {
 			m_proposal_counter++;
@@ -100,6 +100,7 @@ public class CheckProposal extends SimpleBehaviour {
 				// Max value at current prices
 				v_ds.put(TasAgent.KEY_MAX_UTILITY, m_bidList.get(0));
 				m_logger.info(TasAgent.KEY_MAX_UTILITY + " => " + m_bidList.get(0));
+				
 				// Difference between First and Second max value at current
 				// prices
 				if(m_bidList.size() > 1){
@@ -108,10 +109,12 @@ public class CheckProposal extends SimpleBehaviour {
 					v_ds.put(TasAgent.KEY_BID_INCREMENT, m_bidList.get(0) - m_bidList.get(0));
 				}				
 				m_logger.info(TasAgent.KEY_BID_INCREMENT + " => " + v_ds.get(TasAgent.KEY_BID_INCREMENT));
+				
 				// WinnerProposal
 				v_ds.put(TasAgent.KEY_WIN_PROPOSAL, m_winnerProp);
 				m_logger.info(TasAgent.KEY_WIN_PROPOSAL + " => " + m_winnerProp.getSender().getLocalName());
-
+				
+				
 				// List of proponents
 				v_ds.put(TasAgent.KEY_PROPONENT_LIST, m_proposeList);
 				
@@ -133,8 +136,7 @@ public class CheckProposal extends SimpleBehaviour {
 				
 				
 								
-				m_proposalStatus = TasAgent.PROPOSAL;
-				m_proposeList = null;
+				m_proposalStatus = TasAgent.PROPOSAL;				
 				m_bidList.clear();
 				m_winRoute.clear();
 				

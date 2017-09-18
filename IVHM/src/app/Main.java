@@ -58,16 +58,7 @@ public class Main {
 			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);			
 			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
 
-			//TODO  para teste
-			//			for (Aircraft aircraft : listaDeAvioes) {							
-			//				//preimiero teste
-			//				//aircraft.getRoute().add(listaFlights.get(0));
-			//				//segundo teste
-			//				//aircraft.getRoute().add(listaFlights.get(1));
-			//				//terceiro
-			//				aircraft.setRoute(listaFlights);
-			//				System.out.println(listaFlights.get(0).getM_origem());
-			//			}
+			
 
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {
@@ -87,7 +78,6 @@ public class Main {
 				logger.warning("A lista de Flights est� vazia.");
 			}
 
-			// FAZER A MESMA COISA PARA O VOOS AQUI
 
 			// rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new
 			// Object[0]);
@@ -98,9 +88,9 @@ public class Main {
 			// Object[0]);
 			// sniffer.start();
 
-			introspector = mc.createNewAgent("introspector",
-					"jade.tools.introspector.Introspector", new Object[0]);
-			introspector.start();
+//			introspector = mc.createNewAgent("introspector",
+//					"jade.tools.introspector.Introspector", new Object[0]);
+//			introspector.start();
 
 
 		} catch (Exception e) {

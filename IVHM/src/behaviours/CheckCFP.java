@@ -22,8 +22,7 @@ public class CheckCFP extends SimpleBehaviour {
 	@Override
 	public void action() {
 		m_finished = false;
-		//ACLMessage v_cfp = new ACLMessage(ACLMessage.CFP);
-		//v_cfp = myAgent.receive(m_mt);
+		
 		ACLMessage v_cfp = myAgent.receive(m_mt);
 		
 		if(v_cfp != null){
@@ -35,9 +34,7 @@ public class CheckCFP extends SimpleBehaviour {
 			} catch (UnreadableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-			
+			}			
 				
 			DataStore v_ds = getDataStore();
 			v_ds.put("CFP", v_cfp);			
@@ -52,10 +49,6 @@ public class CheckCFP extends SimpleBehaviour {
 		return m_finished;
 	}
 	
-	@Override
-	public int onEnd() {
-		System.gc();
-		return super.onEnd();
-	}
+	
 
 }

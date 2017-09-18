@@ -24,27 +24,24 @@ public class CheckAdmission extends OneShotBehaviour {
 	private Flight m_flt;
 	private Aircraft m_acft;
 	private final Double VALORCOMBUSTIVEL = Double.valueOf(531D);
-	DataStore ds;
-	
-	
+	private DataStore ds; 
+
+	private List<Flight> m_listaRotaProposta = new ArrayList<Flight>();
 	private Proposal proposal = new Proposal();
 
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 
 	@Override
 	public void action() {
-		
 		ds = getDataStore();
 		ACLMessage v_cfp = (ACLMessage) ds.get("CFP");
 		m_acft = (Aircraft) ds.get(myAgent.getLocalName());
-		
-		
+
+
 		try {
 			// Recebe voo
 			m_flt = (Flight) v_cfp.getContentObject();
-			// TODO TESTES
-//			m_flt.setM_origem("A");
-//			m_flt.setM_destino("B");
+
 		} catch (UnreadableException e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
 			e.printStackTrace();
@@ -53,16 +50,14 @@ public class CheckAdmission extends OneShotBehaviour {
 
 	@Override
 	public int onEnd() {
-		
+
 		if (isAceitaPropostaVooCandidato()) {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
 			
-			System.gc();
 			return AircraftAgent.ADMISSION_OK;
 		} else {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION NOK");
-			
-			System.gc();
+
 			return AircraftAgent.ADMISSION_NOK;
 		}
 
@@ -72,8 +67,8 @@ public class CheckAdmission extends OneShotBehaviour {
 		Double preco = Double.valueOf(0D);
 		Double v_fltValue = Double.valueOf(0D);
 		Boolean propostaAceita = false;
-		List<Flight> m_listaRotaProposta = new ArrayList<Flight>();
-		
+
+
 		try {
 			// Rota do aviao vazia?
 			if (m_acft.getRoute() != null && !m_acft.getRoute().isEmpty()) {
@@ -130,16 +125,13 @@ public class CheckAdmission extends OneShotBehaviour {
 					preco += flight.getM_fuelKG();
 					v_fltValue += flight.getM_flightValue();
 				}
-//				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL;
-				preco = (preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL + m_acft.getPrice();
+
+				preco = ((preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL) + m_acft.getPrice();
 				v_fltValue -= preco;
-				
-				//proposal.setPrice(preco);
+
 				proposal.setPrice(v_fltValue);
 				proposal.setRoute(m_listaRotaProposta);
-				
 
-				// ENVIAO o PROPOSE
 				ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
 
 			} 
@@ -148,10 +140,8 @@ public class CheckAdmission extends OneShotBehaviour {
 		} finally {
 			preco = null;
 			v_fltValue = null;
-			m_listaRotaProposta = null;
-			
 		}
-		
+
 		return propostaAceita;
 	}
 

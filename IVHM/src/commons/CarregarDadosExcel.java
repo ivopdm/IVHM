@@ -37,22 +37,22 @@ public class CarregarDadosExcel {
 			// Random gerador = new Random();
 			for (int row = 0; row < linhas; row++) {
 				if (row > 0) {
-					// verifica se coluna 0 (A) e linha row n�o � vazia
+					// verifica se coluna 0 (A) e linha row nao e vazia
 					if (!sheet.getCell(7, row).getContents().isEmpty()) {
 						if (Integer.valueOf(sheet.getCell(7, row).getContents()) != compara) {
 							Aircraft aviao = new Aircraft();
-							// recupera informa��o da coluna A linha row.
+							// recupera informacao da coluna A linha row.
 							aviao.setId(Long.valueOf(sheet.getCell(7, row).getContents().toString()));
 							compara = Integer.valueOf(sheet.getCell(7, row).getContents());
 							if (!sheet.getCell(6, row).getContents().isEmpty()) {
-								// recupera informa��o da coluna B linha
+								// recupera informacao da coluna B linha
 								// row.
 								aviao.setNome(sheet.getCell(6, row).getContents().toString());
 							}
 							// Double valor = Math.random() + 1;
 							// valor = Double.valueOf(String.format(Locale.US,
 							// "%.2f", valor));
-							Double valor = 0.05 * Math.random() + 1;
+							Double valor = (0.05 * Math.random()) + 1;
 							valor = Double.valueOf(String.format(Locale.US, "%.4f", valor));
 							aviao.setFator(valor);
 							aviao.setCurrLoc(sheet.getCell(2, row).getContents().toString());
@@ -117,11 +117,11 @@ public class CarregarDadosExcel {
 						flight.setM_dataEta(
 								Data.toDate(sheet.getCell(5, row).getContents().toString(), Data.DATA_HORA_PADRAO));
 					}
-					Double valorFuel = Math.random() * (10000.00 - 5000.00) + 5000.00;
+					Double valorFuel = Math.random() * (1000 - 5000 + 1) + 5000;
 					valorFuel = Double.valueOf(String.format(Locale.US, "%.0f", valorFuel));
 					flight.setM_fuelKG(valorFuel);
 
-					Double flightValue = Math.random() * (50000.00 - 10000.00) + 5000.00;
+					Double flightValue = Math.random() * (5000 - 10000 + 1) + 5000;
 					flightValue = Double.valueOf(String.format(Locale.US, "%.0f", flightValue));
 					flight.setM_flightValue(flightValue);
 

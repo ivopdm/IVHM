@@ -30,33 +30,35 @@ public class SendCfp extends OneShotBehaviour {
 	private List<AID> m_recList;
 	private List<Flight> m_unassignedList = new ArrayList<Flight>();
 	private final Logger m_logger = Logger.getLogger(getClass().getName()); 
+	private ACLMessage m_cfp = new ACLMessage(ACLMessage.CFP);
 
 	public SendCfp(HashMap<Flight,String> p_assignment, List<AID> p_recList) {
 		this.m_assignment = p_assignment;
 		this.m_recList = p_recList;
+		m_cfp.clearAllReceiver();
+		//Set receiver for CFP
+		for (AID aid : m_recList) {
+			m_cfp.addReceiver(aid);
+			m_logger.log(Level.INFO, "Receiver: {0}", aid.getLocalName() );
+		}
 	}
 
 	@Override
 	public void action() {
-		ACLMessage v_cfp = new ACLMessage(ACLMessage.CFP);
+		
 		DataStore v_ds;
 		v_ds = getDataStore();
-
-		//Set receiver for CFP
-		for (AID aid : m_recList) {
-			v_cfp.addReceiver(aid);
-			m_logger.log(Level.INFO, "Receiver: {0}", aid.getLocalName() );
-		}
+		
 		
 		fillUnAssList();
 
 
 		try {
 			Flight v_flight = m_unassignedList.remove(0);
-			v_cfp.setContentObject(v_flight);
-			myAgent.send(v_cfp);
+			m_cfp.setContentObject(v_flight);
+			myAgent.send(m_cfp);
 
-			v_ds.put(TasAgent.KEY_CURRENT_UNASSIGNED, v_flight);
+//			v_ds.put(TasAgent.KEY_CURRENT_UNASSIGNED, v_flight);
 
 			m_logger.log(Level.INFO, "Unassigned FLIGHT -> {0}", 
 					v_flight.getM_FlightID());

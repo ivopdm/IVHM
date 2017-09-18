@@ -16,10 +16,6 @@ public class SendPropose extends OneShotBehaviour {
 	 */
 	private static final long serialVersionUID = 3591700095749070623L;
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
-	
-	
-	
-	
 
 	@Override
 	public void action() {
@@ -31,7 +27,7 @@ public class SendPropose extends OneShotBehaviour {
 
 		ACLMessage v_aclPropose = v_cfp.createReply();
 		v_aclPropose.setPerformative(ACLMessage.PROPOSE);
-		//v_aclPropose.setContent(v_prop.getPrice().toString());
+		
 		try {
 			v_aclPropose.setContentObject(v_prop);
 		} catch (IOException e) {
@@ -42,7 +38,7 @@ public class SendPropose extends OneShotBehaviour {
 		myAgent.send(v_aclPropose);
 
 		m_logger.info(myAgent.getLocalName() + " proposes -> " + v_prop.getPrice());
-
+					
 	}
 
 }
