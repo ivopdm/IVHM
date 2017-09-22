@@ -6,6 +6,7 @@ import java.util.List;
 
 import behaviours.CheckProposal;
 import behaviours.CheckUnassigned;
+import behaviours.CheckUpdate;
 import behaviours.FinishAssignment;
 import behaviours.SendCfp;
 import behaviours.SendFeedback;
@@ -37,7 +38,7 @@ public class TasAgent extends Agent {
 	private static final String SEND_CFP = "Send_CFP";
 	private static final String CHECK_PROPOSAL = "Check_Proposal";
 	private static final String SEND_FEEDBACK = "SEND_FEEDBACK";
-
+	private static final String CHECK_UPDATE ="CHECK_UPDATE";
 	// Datastore keys
 	public static final String KEY_WIN_PROPOSAL = "WinnerProposal";
 	public static final String KEY_BID_INCREMENT = "BidIncrement";
@@ -99,6 +100,10 @@ public class TasAgent extends Agent {
 		sndFdbck.setDataStore(m_fsm.getDataStore());
 		m_fsm.registerState(sndFdbck, SEND_FEEDBACK);
 		
+		Behaviour chkUpd = new CheckUpdate();
+		chkUpd.setDataStore(m_fsm.getDataStore());
+		m_fsm.registerState(chkUpd, CHECK_UPDATE);
+		
 		
 		// REGISTER TRANSITIONS
 		m_fsm.registerTransition(CHECK_ASSIGNMENT, FINISH_ASSIGNMENT, ALL_ASSIGNED);
@@ -106,8 +111,8 @@ public class TasAgent extends Agent {
 		m_fsm.registerDefaultTransition(SEND_CFP, CHECK_PROPOSAL);
 		m_fsm.registerTransition(CHECK_PROPOSAL, SEND_FEEDBACK, PROPOSAL);
 		m_fsm.registerTransition(CHECK_PROPOSAL, CHECK_ASSIGNMENT, NO_PROPOSAL);
-		m_fsm.registerDefaultTransition(SEND_FEEDBACK, CHECK_ASSIGNMENT);
-
+		m_fsm.registerDefaultTransition(SEND_FEEDBACK, CHECK_UPDATE);
+		m_fsm.registerDefaultTransition(CHECK_UPDATE, CHECK_ASSIGNMENT);
 		addBehaviour(m_fsm);
 	}
 

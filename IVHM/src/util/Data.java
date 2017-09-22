@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Data {
 	// public static final String DATA_HORA_PADRAO = "dd/MM/yyyy hh:mm:ss";
-	public static final String DATA_HORA_PADRAO = "MM/dd/yyyy hh:mm";
+	public static final String DATA_HORA_PADRAO = "MM/dd/yyyy HH:mm";
 
 	public static Date toDate(String p_Data, String p_Padrao) {
 		Date DataAux = new Date();

@@ -59,6 +59,10 @@ public class UpdPrice extends SimpleBehaviour {
 			v_ds.put(myAgent.getLocalName(), v_acft);
 			m_logger.info(myAgent.getLocalName() +" HAS PRICE UPDATED FROM => " + v_oldPrice +  " TO -> " + v_price);
 			m_finished = true;
+			
+			ACLMessage v_infoUpd = v_propResp.createReply();
+			v_infoUpd.setPerformative(ACLMessage.INFORM);
+			myAgent.send(v_infoUpd);
 
 		}else{
 			block();

@@ -53,7 +53,7 @@ public class CheckAdmission extends OneShotBehaviour {
 
 		if (isAceitaPropostaVooCandidato()) {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION OK");
-			
+
 			return AircraftAgent.ADMISSION_OK;
 		} else {
 			m_logger.info(myAgent.getLocalName() + " => ADMISSION NOK");
@@ -70,22 +70,25 @@ public class CheckAdmission extends OneShotBehaviour {
 
 
 		try {
+
 			// Rota do aviao vazia?
 			if (m_acft.getRoute() != null && !m_acft.getRoute().isEmpty()) {
 				CalcFlight.ordenaPorData(m_acft.getRoute());
 
 				for (Flight flight : m_acft.getRoute()) {
 					// TEM VOO NA ROTA ANTES DO RECEBIDO
+					//System.out.println("TEM VOO NA ROTA ANTES DO RECEBIDO");
 					if (flight.getM_destino().equals(m_flt.getM_origem())
 							&& CalcFlight.isMaiorTAT(m_flt.getM_dataEtd(), flight.getM_dataEta())) {
 						propostaAceita = true;
 
 						for (int i = 0; i <= m_acft.getRoute().indexOf(flight); i++) {
 							m_listaRotaProposta.add(m_acft.getRoute().get(i));
+							System.out.println(m_acft.getRoute().get(i));
 						}
 
 						m_listaRotaProposta.add(m_flt);
-
+						break;
 					}
 				}
 
@@ -105,8 +108,9 @@ public class CheckAdmission extends OneShotBehaviour {
 							propostaAceita = true;
 							for (int i = m_acft.getRoute().indexOf(flight); i <= m_acft.getRoute().size() - 1; i++) {
 								m_listaRotaProposta.add(m_acft.getRoute().get(i));
+								System.out.println(m_acft.getRoute().get(i));
 							}
-
+							break;
 						}
 					}
 
