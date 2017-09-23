@@ -6,7 +6,7 @@ import java.util.List;
 
 import behaviours.CheckProposal;
 import behaviours.CheckUnassigned;
-import behaviours.CheckUpdate;
+//import behaviours.CheckUpdate;
 import behaviours.FinishAssignment;
 import behaviours.SendCfp;
 import behaviours.SendFeedback;
@@ -100,9 +100,9 @@ public class TasAgent extends Agent {
 		sndFdbck.setDataStore(m_fsm.getDataStore());
 		m_fsm.registerState(sndFdbck, SEND_FEEDBACK);
 		
-		Behaviour chkUpd = new CheckUpdate();
-		chkUpd.setDataStore(m_fsm.getDataStore());
-		m_fsm.registerState(chkUpd, CHECK_UPDATE);
+		//Behaviour chkUpd = new CheckUpdate();
+		//chkUpd.setDataStore(m_fsm.getDataStore());
+		//m_fsm.registerState(chkUpd, CHECK_UPDATE);
 		
 		
 		// REGISTER TRANSITIONS

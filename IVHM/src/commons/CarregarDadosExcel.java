@@ -145,4 +145,85 @@ public class CarregarDadosExcel {
 		return listaFlights;
 	}
 
+	public List<Route> montarListaRoute(String nomeTalela) {
+		List<Route> listaRotas = new java.util.ArrayList<Route>();
+		String v_caminho = "./src/resources/data/" + nomeTalela;
+		Workbook workbook = null;
+		try {
+			WorkbookSettings config = new WorkbookSettings();
+			config.setEncoding("Cp1252");
+			workbook = Workbook.getWorkbook(new File(v_caminho), config);
+			Sheet sheet = workbook.getSheet(0);
+			int linhas = sheet.getRows();
+			
+			Integer comparaRota = 0;
+			Integer id = 1;
+			Route route = new Route();
+						
+			for (int row = 0; row < linhas; row++) {
+				if (row > 0) {
+					if (!sheet.getCell(7, row).getContents().isEmpty()) {
+						if (Integer.valueOf(sheet.getCell(7, row).getContents()) != comparaRota) {
+							if (row != 1) {
+								listaRotas.add(route);
+							}
+							route = new Route();
+							route.setM_id(Long.valueOf(id));
+							route.setM_lstFlights(new ArrayList<Flight>());
+							id++;
+						}
+						comparaRota = Integer.valueOf(sheet.getCell(7, row).getContents());
+						// monta o voo
+						Flight flight = new Flight();
+						if (!sheet.getCell(1, row).getContents().isEmpty()) {
+							flight.setM_FlightID(sheet.getCell(1, row).getContents().toString());
+						}
+						if (!sheet.getCell(2, row).getContents().isEmpty()) {
+							flight.setM_origem(sheet.getCell(2, row).getContents().toString());
+						}
+						if (!sheet.getCell(3, row).getContents().isEmpty()) {
+							flight.setM_destino(sheet.getCell(3, row).getContents().toString());
+						}
+						if (!sheet.getCell(4, row).getContents().isEmpty()) {
+							flight.setM_dataEtd(
+									Data.toDate(sheet.getCell(4, row).getContents().toString(), Data.DATA_HORA_PADRAO));
+						}
+						if (!sheet.getCell(5, row).getContents().isEmpty()) {
+							flight.setM_dataEta(
+									Data.toDate(sheet.getCell(5, row).getContents().toString(), Data.DATA_HORA_PADRAO));
+						}
+						Double valorFuel = Math.random() * (1000 - 5000 + 1) + 5000;
+						valorFuel = Double.valueOf(String.format(Locale.US, "%.0f", valorFuel));
+						flight.setM_fuelKG(valorFuel);
+						
+						route.setM_SumValue(route.getM_SumValue() + valorFuel);
+
+						Double flightValue = Math.random() * (5000 - 10000 + 1) + 5000;
+						flightValue = Double.valueOf(String.format(Locale.US, "%.0f", flightValue));
+						flight.setM_flightValue(flightValue);
+						
+						route.setM_SumFuelKG(route.getM_SumFuelKG() + flightValue);
+
+						route.getM_lstFlights().add(flight);
+						if (linhas-1 == row) {
+							listaRotas.add(route);
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			logger.info("Erro: " + e.getMessage());
+		} catch (BiffException e) {
+			logger.info("Erro: " + e.getMessage());
+		} catch (NumberFormatException e) {
+			logger.info("Erro: " + e.getMessage());
+		} catch (Exception e) {
+			logger.info("Erro: " + e.getMessage());
+		} finally {
+			if (workbook != null)
+				workbook.close();
+		}
+		return listaRotas;
+	}
+
 }
