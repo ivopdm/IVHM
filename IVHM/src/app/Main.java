@@ -24,8 +24,8 @@ import jade.wrapper.AgentController;
 public class Main {
 
 	private final static Logger logger = Logger.getMyLogger("Main.java");
-	private static String NOMETABELA = "FlightLegs.xls";
-	// private static String NOMETABELA = "teste.xls";
+	// private static String NOMETABELA = "FlightLegs.xls";
+	private static String NOMETABELA = "teste.xls";
 
 	/**
 	 * @param args
@@ -63,10 +63,17 @@ public class Main {
 
 			listaRoutes = carregarDadosExcel.montarListaRoute(NOMETABELA);
 			for (Route route : listaRoutes) {
+				Double valor = 0.0;
+				Double kgFluel = 0.0;
+				for (Flight flight : route.getM_lstFlights()) {
+					valor += flight.getM_flightValue();
+					kgFluel += flight.getM_fuelKG();
+				}
+
 				System.out.println("--------------------------------");
 				System.out.println("id: " + route.getM_id());
-				System.out.println("Fuel Total: " + route.getM_SumFuelKG());
-				System.out.println("Valor Total: " + route.getM_SumValue());
+				System.out.println("Fuel Rota Total: " + route.getM_SumFuelKG() + "--> Tolal da lista de Voos: " + kgFluel);
+				System.out.println("Valor Rota Total: " + route.getM_SumValue() + "--> Total da lista de Voos:" + valor);
 				System.out.println("Número de Voos: " + route.getM_lstFlights().size());
 				System.out.println("--------------------------------");
 			}
