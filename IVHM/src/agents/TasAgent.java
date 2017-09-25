@@ -12,6 +12,7 @@ import behaviours.SendCfp;
 import behaviours.SendFeedback;
 import commons.Aircraft;
 import commons.Flight;
+import commons.Route;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -46,12 +47,15 @@ public class TasAgent extends Agent {
 	public static final String KEY_CURRENT_UNASSIGNED = "CurrentUnassigned";
 	public static final String KEY_ASSIGNMENT = "Assignment";
 	public static final String FLIGHT_UNASSIGNED = "Unassigned";
+	public static final String ROUTE_UNASSIGNED = "Unassigned";
 	public static final String KEY_PROPONENT_LIST = "ProponentList";
 
 	private FSMBehaviour m_fsm;
 
 	private HashMap<Flight, String> m_assignment = new HashMap<Flight, String>();
 	private ArrayList<AID> m_recList = new ArrayList<AID>();
+	
+	private HashMap<Route, String> m_assignmentRota = new HashMap<Route, String>();
 	
 	@Override
 	protected void setup() {
@@ -65,6 +69,13 @@ public class TasAgent extends Agent {
 		Object[] objetoArgs = new Object[2];
 		objetoArgs = this.getArguments();
 
+		List<Route> listaRotas = new ArrayList<Route>();
+		listaRotas = (List<Route>) objetoArgs[0];
+		for (int i = 0; i < listaRotas.size(); i++) {
+			Route route = listaRotas.get(i);
+			m_assignmentRota.put(route, TasAgent.ROUTE_UNASSIGNED);
+		}		
+		
 		List<Flight> listaFlights = new ArrayList<Flight>();
 		listaFlights = (List<Flight>) objetoArgs[0];
 		for (int i = 0; i < listaFlights.size(); i++) {
