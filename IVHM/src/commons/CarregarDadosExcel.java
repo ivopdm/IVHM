@@ -195,14 +195,14 @@ public class CarregarDadosExcel {
 						Double valorFuel = Math.random() * (1000 - 5000 + 1) + 5000;
 						valorFuel = Double.valueOf(String.format(Locale.US, "%.0f", valorFuel));
 						flight.setM_fuelKG(valorFuel);
-						
-						route.setM_SumValue(route.getM_SumValue() + valorFuel);
+						route.setM_SumFuelKG(route.getM_SumFuelKG() + valorFuel);
 
 						Double flightValue = Math.random() * (5000 - 10000 + 1) + 5000;
 						flightValue = Double.valueOf(String.format(Locale.US, "%.0f", flightValue));
 						flight.setM_flightValue(flightValue);
 						
-						route.setM_SumFuelKG(route.getM_SumFuelKG() + flightValue);
+						route.setM_SumValue(route.getM_SumValue() + flightValue);
+						
 
 						route.getM_lstFlights().add(flight);
 						if (linhas-1 == row) {
