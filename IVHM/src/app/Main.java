@@ -24,8 +24,8 @@ import jade.wrapper.AgentController;
 public class Main {
 
 	private final static Logger logger = Logger.getMyLogger("Main.java");
-	// private static String NOMETABELA = "FlightLegs.xls";
-	private static String NOMETABELA = "teste.xls";
+	private static String NOMETABELA = "FlightLegs.xls";
+	// private static String NOMETABELA = "teste.xls";
 
 	/**
 	 * @param args
@@ -62,21 +62,14 @@ public class Main {
 			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
 
 			listaRoutes = carregarDadosExcel.montarListaRoute(NOMETABELA);
-			for (Route route : listaRoutes) {
-				Double valor = 0.0;
-				Double kgFluel = 0.0;
-				for (Flight flight : route.getM_lstFlights()) {
-					valor += flight.getM_flightValue();
-					kgFluel += flight.getM_fuelKG();
-				}
-
-				System.out.println("--------------------------------");
-				System.out.println("id: " + route.getM_id());
-				System.out.println("Fuel Rota Total: " + route.getM_SumFuelKG() + "--> Tolal da lista de Voos: " + kgFluel);
-				System.out.println("Valor Rota Total: " + route.getM_SumValue() + "--> Total da lista de Voos:" + valor);
-				System.out.println("Número de Voos: " + route.getM_lstFlights().size());
-				System.out.println("--------------------------------");
-			}
+//			for (Route route : listaRoutes) {
+//				System.out.println("--------------------------------");
+//				System.out.println("id: " + route.getM_id());
+//				System.out.println("Fuel Total: " + route.getM_SumFuelKG());
+//				System.out.println("Valor Total: " + route.getM_SumValue());
+//				System.out.println("Número de Voos: " + route.getM_lstFlights().size());
+//				System.out.println("--------------------------------");
+//			}
 
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {
@@ -88,9 +81,9 @@ public class Main {
 				logger.warning("A lista de Aircraft estï¿½ vazia.");
 			}
 
-			if (listaDeAvioes != null && !listaDeAvioes.isEmpty() && listaFlights != null && !listaFlights.isEmpty()) {
+			if (listaDeAvioes != null && !listaDeAvioes.isEmpty() && listaRoutes != null && !listaRoutes.isEmpty()) {
 				AgentController tas = mc.createNewAgent("TAS", agents.TasAgent.class.getName(),
-						new Object[] { listaFlights, listaDeAvioes });
+						new Object[] { listaRoutes, listaDeAvioes });
 				tas.start();
 			} else {
 				logger.warning("A lista de Flights estï¿½ vazia.");
