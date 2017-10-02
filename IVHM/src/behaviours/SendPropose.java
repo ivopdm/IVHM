@@ -2,7 +2,6 @@ package behaviours;
 
 import java.io.IOException;
 
-import commons.Proposal;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -22,7 +21,7 @@ public class SendPropose extends OneShotBehaviour {
 		
 		DataStore v_ds = getDataStore();
 		
-		Proposal v_prop = (Proposal) v_ds.get(myAgent.getLocalName() + "_PROPOSAL");
+		Double v_prop = (Double) v_ds.get(myAgent.getLocalName() + "_PROPOSAL");
 		ACLMessage v_cfp = (ACLMessage) v_ds.get("CFP");
 
 		ACLMessage v_aclPropose = v_cfp.createReply();
@@ -31,13 +30,12 @@ public class SendPropose extends OneShotBehaviour {
 		try {
 			v_aclPropose.setContentObject(v_prop);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		myAgent.send(v_aclPropose);
 
-		m_logger.info(myAgent.getLocalName() + " proposes -> " + v_prop.getPrice());
+		m_logger.info(myAgent.getLocalName() + " proposes -> " + v_prop);
 					
 	}
 

@@ -32,8 +32,7 @@ public class UpdPrice extends SimpleBehaviour {
 	public void action() {
 		m_finished = false;
 		DataStore v_ds = getDataStore();
-		Aircraft v_acft = (Aircraft) v_ds.get(myAgent.getLocalName());
-		Proposal v_prop = (Proposal) v_ds.get(myAgent.getLocalName() + "_PROPOSAL");
+		Aircraft v_acft = (Aircraft) v_ds.get(myAgent.getLocalName());		
 		double v_price = v_acft.getPrice();
 		double v_oldPrice = v_price;
 		
@@ -47,15 +46,9 @@ public class UpdPrice extends SimpleBehaviour {
 						Double.parseDouble(v_propResp.getContent()) +
 						EPSON;
 				
-				v_acft.setPrice(v_price);
-				v_acft.getRoute().clear();
-				v_acft.getRoute().addAll(v_prop.getRoute());
-				
-			}
-			v_prop.getRoute().clear();
-			v_prop.setRoute(null);
-			v_prop.setPrice(null);
-			
+				v_acft.setPrice(v_price);				
+			}			
+						
 			v_ds.put(myAgent.getLocalName(), v_acft);
 			m_logger.info(myAgent.getLocalName() +" HAS PRICE UPDATED FROM => " + v_oldPrice +  " TO -> " + v_price);
 			m_finished = true;

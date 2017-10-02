@@ -7,6 +7,7 @@ import agents.AircraftAgent;
 import commons.Aircraft;
 import commons.Flight;
 import commons.Proposal;
+import commons.Route;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -21,7 +22,7 @@ public class CheckAdmission extends OneShotBehaviour {
 	 * deve participar da negociacao/competicao para realizar o voo
 	 */
 	private static final long serialVersionUID = 8628498715010608266L;
-	private Flight m_flt;
+	private Route m_route;
 	private Aircraft m_acft;
 	private final Double VALORCOMBUSTIVEL = Double.valueOf(531D);
 	private DataStore ds; 
@@ -37,10 +38,9 @@ public class CheckAdmission extends OneShotBehaviour {
 		ACLMessage v_cfp = (ACLMessage) ds.get("CFP");
 		m_acft = (Aircraft) ds.get(myAgent.getLocalName());
 
-
 		try {
-			// Recebe voo
-			m_flt = (Flight) v_cfp.getContentObject();
+			// Recebe rota
+			m_route = (Route) v_cfp.getContentObject();
 
 		} catch (UnreadableException e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
@@ -68,77 +68,26 @@ public class CheckAdmission extends OneShotBehaviour {
 		Double v_fltValue = Double.valueOf(0D);
 		Boolean propostaAceita = false;
 
-
 		try {
-
-			// Rota do aviao vazia?
-			if (m_acft.getRoute() != null && !m_acft.getRoute().isEmpty()) {
-				CalcFlight.ordenaPorData(m_acft.getRoute());
-
-				for (Flight flight : m_acft.getRoute()) {
-					// TEM VOO NA ROTA ANTES DO RECEBIDO
-					//System.out.println("TEM VOO NA ROTA ANTES DO RECEBIDO");
-					if (flight.getM_destino().equals(m_flt.getM_origem())
-							&& CalcFlight.isMaiorTAT(m_flt.getM_dataEtd(), flight.getM_dataEta())) {
-						propostaAceita = true;
-
-						for (int i = 0; i <= m_acft.getRoute().indexOf(flight); i++) {
-							m_listaRotaProposta.add(m_acft.getRoute().get(i));
-							System.out.println(m_acft.getRoute().get(i));
-						}
-
-						m_listaRotaProposta.add(m_flt);
-						break;
-					}
-				}
-
-				if (!propostaAceita) {
-					// Origem do voo igual a local do aviao, caso lista vazia
-					if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
-						m_listaRotaProposta.add(m_flt);
-						propostaAceita = Boolean.TRUE;
-					}
-				}
-
-				// TEM VOO NA ROTA DEPOIS DO RECEBIDO
-				if (propostaAceita) {
-					for (Flight flight : m_acft.getRoute()) {
-						if (flight.getM_origem().equals(m_flt.getM_destino())
-								&& CalcFlight.isMaiorTAT(flight.getM_dataEtd(), m_flt.getM_dataEta())) {
-							propostaAceita = true;
-							for (int i = m_acft.getRoute().indexOf(flight); i <= m_acft.getRoute().size() - 1; i++) {
-								m_listaRotaProposta.add(m_acft.getRoute().get(i));
-								System.out.println(m_acft.getRoute().get(i));
-							}
-							break;
-						}
-					}
-
-				}
-			} else {
-				// Origem do voo igual a local do aviao, caso lista vazia
-				if (m_flt.getM_origem().equals(m_acft.getCurrLoc())) {
-					m_listaRotaProposta.add(m_flt);
-					propostaAceita = Boolean.TRUE;
-				}
-			}
-
-			// REALIZA O CALCULO DA PROPOSTA SE PROPOSTA ACEITA E LISTA != VAZIA
-			if (propostaAceita && !m_listaRotaProposta.isEmpty()) {
-				for (Flight flight : m_listaRotaProposta) {
-					preco += flight.getM_fuelKG();
-					v_fltValue += flight.getM_flightValue();
-				}
-
-				preco = ((preco / 1000) * m_acft.getFator() * VALORCOMBUSTIVEL) + m_acft.getPrice();
+			CalcFlight.ordenaPorData(m_route.getM_lstFlights());
+			
+			Flight v_route1stFlt = m_route.getM_lstFlights().get(0);
+			
+			if (v_route1stFlt.getM_origem().equals(m_acft.getCurrLoc())) {
+				propostaAceita = Boolean.TRUE;
+				
+				preco = ((m_route.getM_SumFuelKG()/1000) 
+						* m_acft.getFator() 
+						* VALORCOMBUSTIVEL)
+						+ m_acft.getPrice();
+				v_fltValue = m_route.getM_SumValue();
 				v_fltValue -= preco;
-
-				proposal.setPrice(v_fltValue);
-				proposal.setRoute(m_listaRotaProposta);
-
-				ds.put(myAgent.getLocalName() + "_PROPOSAL", proposal);
-
-			} 
+				
+				
+				ds.put(myAgent.getLocalName() + "_PROPOSAL", v_fltValue);
+				
+			}	
+ 
 		} catch (Exception e) {
 			m_logger.warning(myAgent.getLocalName() + e.getMessage());
 		} finally {

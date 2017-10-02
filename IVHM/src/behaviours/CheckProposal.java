@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import agents.TasAgent;
 import commons.Flight;
 import commons.Proposal;
+import commons.Route;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -31,16 +32,15 @@ public class CheckProposal extends SimpleBehaviour {
 	private MessageTemplate m_mt = MessageTemplate.or(m_op1, m_op2);
 	private List<ACLMessage> m_proposeList = new ArrayList<ACLMessage>(TasAgent.ACFT_QTY);
 	private List<Double> m_bidList = new ArrayList<Double>();
-	private List<Flight> m_winRoute = new ArrayList<Flight>();
-
+	
 	private ACLMessage m_winnerProp;
-	private HashMap<Flight, String> m_assignment;
+	private HashMap<Route, String> m_assignment;
 
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 
 	private int m_proposalStatus;
 
-	public CheckProposal(HashMap<Flight, String> p_assignment) {
+	public CheckProposal(HashMap<Route, String> p_assignment) {
 		m_assignment = p_assignment;
 	}
 
@@ -77,20 +77,15 @@ public class CheckProposal extends SimpleBehaviour {
 				
 				for (ACLMessage aclMessage : m_proposeList) {
 					try {
-						Proposal v_prop = (Proposal) aclMessage.getContentObject();
-						//Double v_price = v_prop.getPrice();
-						//double v_bid = v_assignmentValue - v_price;
-						double v_bid = v_prop.getPrice();
+						 						
+						double v_bid = (Double) aclMessage.getContentObject();
 						m_bidList.add(v_bid);
 
 						if (v_bid > v_max) {
 							v_max = v_bid;
-							m_winnerProp = aclMessage;
-							m_winRoute  = v_prop.getRoute();
-							
+							m_winnerProp = aclMessage;							
 						}
 					} catch (UnreadableException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}				
 
@@ -113,13 +108,12 @@ public class CheckProposal extends SimpleBehaviour {
 				// WinnerProposal
 				v_ds.put(TasAgent.KEY_WIN_PROPOSAL, m_winnerProp);
 				m_logger.info(TasAgent.KEY_WIN_PROPOSAL + " => " + m_winnerProp.getSender().getLocalName());
-				
-				
+					
 				// List of proponents
 				v_ds.put(TasAgent.KEY_PROPONENT_LIST, m_proposeList);
 				
 				//Remove another assignment involving winner proponent
-				for (Entry<Flight, String> v_winAssign : m_assignment.entrySet()){
+				for (Entry<Route, String> v_winAssign : m_assignment.entrySet()){
 					if(v_winAssign.getValue().equals(
 							m_winnerProp.getSender().getLocalName())){
 						
@@ -129,18 +123,11 @@ public class CheckProposal extends SimpleBehaviour {
 				}
 				
 				//Update assignment set with new assignment involving winner proponent
-				for (Flight flt : m_winRoute) {
-					m_assignment.put(flt, 
+				m_assignment.put( (Route) v_ds.get(TasAgent.KEY_CURRENT_UNASSIGNED), 
 							m_winnerProp.getSender().getLocalName());
-				}
-				
-				
 								
 				m_proposalStatus = TasAgent.PROPOSAL;				
-				m_bidList.clear();
-				m_winRoute.clear();
-				
-				
+				m_bidList.clear();				
 			}
 		}
 

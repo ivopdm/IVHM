@@ -1,6 +1,6 @@
 package behaviours;
 
-import commons.Flight;
+import commons.Route;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -29,10 +29,9 @@ public class CheckCFP extends SimpleBehaviour {
 			m_finished = true;
 			
 			try {
-				Flight v_cfp_content = (Flight) v_cfp.getContentObject();
-				m_logger.info(myAgent.getLocalName() + " received content -> " + v_cfp_content.getM_FlightID());
+				Route v_cfp_content = (Route) v_cfp.getContentObject();
+				m_logger.info(myAgent.getLocalName() + " received content -> " + v_cfp_content.getM_id());
 			} catch (UnreadableException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 				

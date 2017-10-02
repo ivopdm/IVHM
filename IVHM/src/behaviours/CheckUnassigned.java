@@ -2,9 +2,11 @@ package behaviours;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import agents.TasAgent;
 import commons.Flight;
+import commons.Route;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.util.Logger;
 
@@ -15,32 +17,32 @@ import jade.util.Logger;
 public class CheckUnassigned extends OneShotBehaviour {
 
 	/**
-	 * Verifica os voos que ainda nao tem aviao alocado.
+	 * Verifica as rotas que ainda nao tem aviao alocado.
 	 * Em caso de haver voo para ser alocado retorna um inteiro para sinalizar isso, representado por TasAgent.CONTAINS_UNASSIGNED.
 	 * Em caso de NAO haver voo para ser alocado retorna um inteiro para sinalizar isso, representado por TasAgent.ALL_ASSIGNED.
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<Flight,String> m_assignment;
+	private Map<Route,String> m_assignment;
 	private int m_trigger;
 	private final Logger m_logger = Logger.getMyLogger(getClass().getName());
 	
 	/** @ConstructorProperties
-	 * Inicializa o HashMap<Flight,String>
-	 * Flight: e um objeto com ID do voo e um Hashmap<String,Double> mapeando nome do aviao e valor
+	 * Inicializa o HashMap<Route,String>
+	 * Route: contem informacao da rota como voos, combustivel requerido e valor
 	 * String: pode ser unassigned ou nome do aviao que vai fazer aquele voo
 	 *
 	 * @param p_assignment
 	 */
 	
-	public CheckUnassigned(HashMap<Flight,String> p_assignment){
+	public CheckUnassigned(HashMap<Route,String> p_assignment){
 		this.m_assignment = p_assignment;		
 	}
 	
 	@Override
 	public void action() {
 		
-		for (Map.Entry<Flight, String> entry : m_assignment.entrySet()) {
-			m_logger.info(entry.getKey().getM_FlightID() + " => " + entry.getValue());			
+		for (Entry<Route, String> entry : m_assignment.entrySet()) {
+			m_logger.info(entry.getKey().getM_id() + " => " + entry.getValue());			
 		}
 		
 		if(m_assignment.containsValue(TasAgent.FLIGHT_UNASSIGNED)){

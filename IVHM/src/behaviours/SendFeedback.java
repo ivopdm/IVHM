@@ -28,8 +28,7 @@ public class SendFeedback extends OneShotBehaviour {
 	public void action() {
 		DataStore v_ds;
 		v_ds = getDataStore();
-		
-		
+				
 		ACLMessage v_win_proposal = (ACLMessage) v_ds.get(TasAgent.KEY_WIN_PROPOSAL);
 		Double v_bidIncrement = (Double) v_ds.get(TasAgent.KEY_BID_INCREMENT);
 		List<ACLMessage> v_proposeList = (ArrayList<ACLMessage>) v_ds.get(TasAgent.KEY_PROPONENT_LIST);
@@ -39,8 +38,7 @@ public class SendFeedback extends OneShotBehaviour {
 		v_msg2win.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 		
 		myAgent.send(v_msg2win);
-		
-		
+				
 		v_msg2loser.clearAllReceiver();
 		for (ACLMessage aclMessage : v_proposeList) {
 			if(aclMessage.getSender() != v_win_proposal.getSender())
