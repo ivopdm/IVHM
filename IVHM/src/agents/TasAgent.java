@@ -6,6 +6,7 @@ import java.util.List;
 
 import behaviours.CheckProposal;
 import behaviours.CheckUnassigned;
+import behaviours.CheckUpdate;
 //import behaviours.CheckUpdate;
 import behaviours.FinishAssignment;
 import behaviours.SendCfp;
@@ -76,12 +77,12 @@ public class TasAgent extends Agent {
 			m_assignmentRota.put(route, TasAgent.ROUTE_UNASSIGNED);
 		}		
 		
-		List<Flight> listaFlights = new ArrayList<Flight>();
+		/*List<Flight> listaFlights = new ArrayList<Flight>();
 		listaFlights = (List<Flight>) objetoArgs[0];
 		for (int i = 0; i < listaFlights.size(); i++) {
 			Flight flight = listaFlights.get(i);
 			m_assignment.put(flight, TasAgent.FLIGHT_UNASSIGNED);
-		}
+		}*/
 
 		
 		List<Aircraft> listaAircrafts = new ArrayList<Aircraft>();
@@ -95,15 +96,15 @@ public class TasAgent extends Agent {
 		m_fsm = new FSMBehaviour();
 
 		// REGISTER STATES
-		m_fsm.registerFirstState(new CheckUnassigned(m_assignment), CHECK_ASSIGNMENT);
+		m_fsm.registerFirstState(new CheckUnassigned(m_assignmentRota), CHECK_ASSIGNMENT);
 
-		Behaviour sndCFP = new SendCfp(m_assignment, m_recList);
+		Behaviour sndCFP = new SendCfp(m_assignmentRota, m_recList);
 		sndCFP.setDataStore(m_fsm.getDataStore());
 		m_fsm.registerState(sndCFP, SEND_CFP);
 
-		m_fsm.registerLastState(new FinishAssignment(m_assignment), FINISH_ASSIGNMENT);
+		m_fsm.registerLastState(new FinishAssignment(m_assignmentRota), FINISH_ASSIGNMENT);
 
-		Behaviour chkProposal = new CheckProposal(m_assignment);
+		Behaviour chkProposal = new CheckProposal(m_assignmentRota);
 		chkProposal.setDataStore(m_fsm.getDataStore());
 		m_fsm.registerState(chkProposal, CHECK_PROPOSAL);
 
@@ -111,9 +112,9 @@ public class TasAgent extends Agent {
 		sndFdbck.setDataStore(m_fsm.getDataStore());
 		m_fsm.registerState(sndFdbck, SEND_FEEDBACK);
 		
-		//Behaviour chkUpd = new CheckUpdate();
-		//chkUpd.setDataStore(m_fsm.getDataStore());
-		//m_fsm.registerState(chkUpd, CHECK_UPDATE);
+		Behaviour chkUpd = new CheckUpdate();
+		chkUpd.setDataStore(m_fsm.getDataStore());
+		m_fsm.registerState(chkUpd, CHECK_UPDATE);
 		
 		
 		// REGISTER TRANSITIONS
