@@ -3,6 +3,8 @@
  */
 package app;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import commons.Aircraft;
@@ -15,6 +17,7 @@ import jade.core.Runtime;
 import jade.util.Logger;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
+import util.CalcFlight;
 
 /**
  * @author IMEDEIRO
@@ -24,8 +27,9 @@ import jade.wrapper.AgentController;
 public class Main {
 
 	private final static Logger logger = Logger.getMyLogger("Main.java");
-	private static String NOMETABELA = "FlightLegs.xls";
+	// private static String NOMETABELA = "FlightLegs.xls";
 	// private static String NOMETABELA = "teste.xls";
+	private static String NOMETABELA = "FlightLegsRepublic.xls";
 
 	/**
 	 * @param args
@@ -58,18 +62,32 @@ public class Main {
 
 		try {
 
-			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);
+			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);			
+			CalcFlight.ordenaAircraftPorID(listaDeAvioes);
 			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
-
-			listaRoutes = carregarDadosExcel.montarListaRoute(NOMETABELA);
-//			for (Route route : listaRoutes) {
+			CalcFlight.ordenaPorFlightID(listaFlights);
+			
+			
+			
+//			for (Flight voo : listaFlights) {
 //				System.out.println("--------------------------------");
-//				System.out.println("id: " + route.getM_id());
-//				System.out.println("Fuel Total: " + route.getM_SumFuelKG());
-//				System.out.println("Valor Total: " + route.getM_SumValue());
-//				System.out.println("Número de Voos: " + route.getM_lstFlights().size());
+//				System.out.println("id: " + voo.getM_FlightID());
+//				System.out.println("Origem: " + voo.getM_origem());
+//				System.out.println("Destino: " + voo.getM_destino());
+//				System.out.println("Data inicio: " + voo.getM_dataEtd());
 //				System.out.println("--------------------------------");
 //			}
+
+			// listaRoutes = carregarDadosExcel.montarListaRoute(NOMETABELA);
+			// for (Route route : listaRoutes) {
+			// System.out.println("--------------------------------");
+			// System.out.println("id: " + route.getM_id());
+			// System.out.println("Fuel Total: " + route.getM_SumFuelKG());
+			// System.out.println("Valor Total: " + route.getM_SumValue());
+			// System.out.println("Número de Voos: " +
+			// route.getM_lstFlights().size());
+			// System.out.println("--------------------------------");
+			// }
 
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {
