@@ -28,7 +28,7 @@ public class Main {
 
 	private final static Logger logger = Logger.getMyLogger("Main.java");
 	// private static String NOMETABELA = "FlightLegs.xls";
-	// private static String NOMETABELA = "teste.xls";
+	 //private static String NOMETABELA = "teste.xls";
 	private static String NOMETABELA = "FlightLegsRepublic.xls";
 
 	/**
@@ -61,13 +61,8 @@ public class Main {
 		CarregarDadosExcel carregarDadosExcel = new CarregarDadosExcel();
 
 		try {
-
-			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);			
-			CalcFlight.ordenaAircraftPorID(listaDeAvioes);
-			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
-			CalcFlight.ordenaPorFlightID(listaFlights);
-			
-			
+			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);
+			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);	
 			
 //			for (Flight voo : listaFlights) {
 //				System.out.println("--------------------------------");
@@ -78,16 +73,16 @@ public class Main {
 //				System.out.println("--------------------------------");
 //			}
 
-			// listaRoutes = carregarDadosExcel.montarListaRoute(NOMETABELA);
-			// for (Route route : listaRoutes) {
-			// System.out.println("--------------------------------");
-			// System.out.println("id: " + route.getM_id());
-			// System.out.println("Fuel Total: " + route.getM_SumFuelKG());
-			// System.out.println("Valor Total: " + route.getM_SumValue());
-			// System.out.println("Número de Voos: " +
-			// route.getM_lstFlights().size());
-			// System.out.println("--------------------------------");
-			// }
+			 listaRoutes = carregarDadosExcel.montarListaRouteNovo(NOMETABELA);
+			 
+//			for (Route route : listaRoutes) {
+//				System.out.println("--------------------------------");
+//				System.out.println("id: " + route.getM_id());
+//				System.out.println("Fuel Total: " + route.getM_SumFuelKG());
+//				System.out.println("Valor Total: " + route.getM_SumValue());
+//				System.out.println("Número de Voos: " + route.getM_lstFlights().size());
+//				System.out.println("--------------------------------");
+//			}
 
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {

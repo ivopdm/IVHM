@@ -58,4 +58,19 @@ public class CalcFlight {
 			}
 		});
 	}
+
+	/**
+	 * Oredena a lista de voos pelos aviaões.
+	 * 
+	 * @param lista
+	 */
+	public static void ordenaPorFlightAircraft(List<Flight> lista) {
+		Collections.sort(lista, new Comparator<Flight>() {
+			@Override
+			public int compare(Flight o1, Flight o2) {
+				return o1.getM_Aircraft().compareTo(o2.getM_Aircraft());
+			}
+		});
+	}
+
 }
