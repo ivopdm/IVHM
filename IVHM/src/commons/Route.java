@@ -1,9 +1,14 @@
 package commons;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Route {
+public class Route implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long m_id;
 	private List<Flight> m_lstFlights;
 	private Double m_SumValue;
