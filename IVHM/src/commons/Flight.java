@@ -22,7 +22,7 @@ public class Flight implements Serializable {
 	private Double m_fuelKG;
 	private Double m_flightValue;
 	// variavel auxiliar para ordenacao da lista.
-	private Integer m_Aircraft;
+	private String m_Aircraft;
 
 	public String getM_FlightID() {
 		return m_FlightID;
@@ -80,11 +80,11 @@ public class Flight implements Serializable {
 		this.m_flightValue = m_flightValue;
 	}
 
-	public Integer getM_Aircraft() {
+	public String getM_Aircraft() {
 		return m_Aircraft;
 	}
 
-	public void setM_Aircraft(Integer m_Aircraft) {
+	public void setM_Aircraft(String m_Aircraft) {
 		this.m_Aircraft = m_Aircraft;
 	}
 

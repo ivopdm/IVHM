@@ -7,18 +7,18 @@ import java.util.List;
  * @author ivopdm TODO Implementar classe aircraft aviao
  */
 public class Aircraft {
-	private Long id;
+	private String id;
 	private String nome;
 	private Double fator = Double.valueOf(1.0);
 	private Double price = Double.valueOf(0.0);
 	private List<Flight> route;
 	private String currLoc;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
