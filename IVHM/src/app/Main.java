@@ -3,8 +3,6 @@
  */
 package app;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import commons.Aircraft;
@@ -17,7 +15,6 @@ import jade.core.Runtime;
 import jade.util.Logger;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import util.CalcFlight;
 
 /**
  * @author IMEDEIRO
