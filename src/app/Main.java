@@ -24,9 +24,10 @@ import jade.wrapper.AgentController;
 public class Main {
 
 	private final static Logger logger = Logger.getMyLogger("Main.java");
-	 private static String NOMETABELA = "FlightLegs.xls";
-	 //private static String NOMETABELA = "teste.xls";
-	//private static String NOMETABELA = "FlightLegsRepublic.xls";
+	// private static String NOMETABELA = "FlightLegs.xls";
+	// private static String NOMETABELA = "teste.xls";
+	 //private static String NOMETABELA = "FlightLegsRepublic.xls";
+	private static String NOMETABELA = "FlightLegsKLNovo.xls";
 
 	/**
 	 * @param args
@@ -59,30 +60,32 @@ public class Main {
 
 		try {
 			listaDeAvioes = carregarDadosExcel.montarListaAvioes(NOMETABELA);
-			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);	
-			
-//			for (Flight voo : listaFlights) {
-//				System.out.println("--------------------------------");
-//				System.out.println("id: " + voo.getM_FlightID());
-//				System.out.println("Origem: " + voo.getM_origem());
-//				System.out.println("Destino: " + voo.getM_destino());
-//				System.out.println("Data inicio: " + voo.getM_dataEtd());
-//				System.out.println("--------------------------------");
-//			}
+			listaFlights = carregarDadosExcel.montarListaFlights(NOMETABELA);
 
-			 listaRoutes = carregarDadosExcel.montarListaRouteNovo(NOMETABELA);
-			 
-//			for (Route route : listaRoutes) {
-//				System.out.println("--------------------------------");
-//				System.out.println("id: " + route.getM_id());
-//				System.out.println("Fuel Total: " + route.getM_SumFuelKG());
-//				System.out.println("Valor Total: " + route.getM_SumValue());
-//				System.out.println("Número de Voos: " + route.getM_lstFlights().size());
-//				System.out.println("--------------------------------");
-//			}
+			// for (Flight voo : listaFlights) {
+			// System.out.println("--------------------------------");
+			// System.out.println("id: " + voo.getM_FlightID());
+			// System.out.println("Origem: " + voo.getM_origem());
+			// System.out.println("Destino: " + voo.getM_destino());
+			// System.out.println("Data inicio: " + voo.getM_dataEtd());
+			// System.out.println("--------------------------------");
+			// }
+
+			listaRoutes = carregarDadosExcel.montarListaRouteNovo(NOMETABELA);
+
+			// for (Route route : listaRoutes) {
+			// System.out.println("--------------------------------");
+			// System.out.println("id: " + route.getM_id());
+			// System.out.println("Fuel Total: " + route.getM_SumFuelKG());
+			// System.out.println("Valor Total: " + route.getM_SumValue());
+			// System.out.println("Número de Voos: " +
+			// route.getM_lstFlights().size());
+			// System.out.println("--------------------------------");
+			// }
 
 			if (listaDeAvioes != null && !listaDeAvioes.isEmpty()) {
 				for (int i = 0; i < listaDeAvioes.size(); i++) {
+					System.out.println(listaDeAvioes.get(i).getId().toString());
 					AgentController acft = mc.createNewAgent(listaDeAvioes.get(i).getId().toString(),
 							agents.AircraftAgent.class.getName(), new Object[] { listaDeAvioes.get(i) });
 					acft.start();
